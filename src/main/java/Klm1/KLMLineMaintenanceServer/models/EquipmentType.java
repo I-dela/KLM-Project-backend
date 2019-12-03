@@ -8,39 +8,65 @@ import java.util.List;
 public class EquipmentType {
 
   @OneToMany(fetch = FetchType.LAZY , mappedBy = "equipmentType")
-  private List<Request> requests;
+  private List<Request> requestedEquipment;
 
   @Id
   @Column(name = "id")
   private int id ;
 
-  @Column(name = "naam")
-  private String naam;
-
+  private String group;
+  private String subgroup;
+  private String abbreviation;
 
   public EquipmentType(){
-
   }
 
-  public EquipmentType(String naam) {
-    this.naam = naam;
+  public EquipmentType(List<Request> requestedEquipment, int id, String group, String subgroup, String abbreviation) {
+    this.requestedEquipment = requestedEquipment;
+    this.id = id;
+    this.group = group;
+    this.subgroup = subgroup;
+    this.abbreviation = abbreviation;
   }
 
+
+  public List<Request> getRequestedEquipment() {
+    return requestedEquipment;
+  }
+
+  public void setRequests(List<Request> requestedEquipment) {
+    this.requestedEquipment = requestedEquipment;
+  }
 
   public int getId() {
     return id;
   }
 
-
-  public String getNaam() {
-    return naam;
+  public void setId(int id) {
+    this.id = id;
   }
 
-  public void setNaam(String naam) {
-    this.naam = naam;
+  public String getGroup() {
+    return group;
   }
 
+  public void setGroup(String group) {
+    this.group = group;
+  }
 
+  public String getSubgroup() {
+    return subgroup;
+  }
 
+  public void setSubgroup(String subgroup) {
+    this.subgroup = subgroup;
+  }
 
+  public String getAbbreviation() {
+    return abbreviation;
+  }
+
+  public void setAbbreviation(String abbreviation) {
+    this.abbreviation = abbreviation;
+  }
 }

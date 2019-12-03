@@ -8,7 +8,7 @@ import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "request")
-public class Request {
+public class Request  {
 
   @Id
   @Column(name = "id")
@@ -18,22 +18,27 @@ public class Request {
 
   @Column(name = "status")
   @NotNull
+  @Enumerated(EnumType.STRING)
   private Status status;
 
   @ManyToOne
   @NotNull
+  @JoinColumn(name = "requestedEquipment")
   private EquipmentType equipmentType;
 
   @ManyToOne
   @NotNull
+  @JoinColumn(name = "aircraftType")
   private  Aircraft aircraft;
 
 
   @ManyToOne
   @NotNull
+  @JoinColumn(name = "requestedLocation")
   private Location location;
 
   @ManyToOne
+  @JoinColumn(name = "usedEquipment")
   private Equipment equipment;
 
   @Column(name = "timeStamp")
@@ -57,8 +62,10 @@ public class Request {
     this.departure = departure;
   }
 
-  enum Status{
+  private enum Status{
     OP, IP, CAN, CL
+
+
   }
 
   public String getId() {

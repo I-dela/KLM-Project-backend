@@ -9,6 +9,7 @@ public class Equipment {
 
   @OneToMany(fetch = FetchType.LAZY, mappedBy = "equipment")
   private List<Request>requests;
+
   @Id
   private String serialNumber;
   private String id;
