@@ -1,5 +1,7 @@
 package Klm1.KLMLineMaintenanceServer.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.util.List;
 
@@ -8,6 +10,7 @@ import java.util.List;
 public class EquipmentType {
 
   @OneToMany(fetch = FetchType.LAZY , mappedBy = "equipmentType")
+  @JsonIgnore
   private List<Request> requestedEquipment;
 
   @Id
