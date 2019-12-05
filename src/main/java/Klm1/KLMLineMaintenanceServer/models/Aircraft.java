@@ -1,5 +1,7 @@
 package Klm1.KLMLineMaintenanceServer.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.util.List;
 
@@ -8,6 +10,7 @@ import java.util.List;
 public class Aircraft {
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "aircraft")
+    @JsonIgnore
     private List<Request> requests;
 
     @Id
@@ -28,13 +31,15 @@ public class Aircraft {
     }
 
 
-    public Aircraft(int id, String name, Type type, String manufacturer) {
+    public Aircraft(List<Request> requests, int id, String name, Type type, String manufacturer) {
+        this.requests = requests;
         this.id = id;
         this.name = name;
         this.type = type;
         this.manufacturer = manufacturer;
     }
-  enum Type {
+
+    enum Type {
     NA, Wide_body, Narrow_body
   }
 
@@ -70,6 +75,14 @@ public class Aircraft {
   public void setManufacturer(String manufacturer) {
     this.manufacturer = manufacturer;
   }
+
+    public List<Request> getRequests() {
+        return requests;
+    }
+
+    public void setRequests(List<Request> requests) {
+        this.requests = requests;
+    }
 }
 
 

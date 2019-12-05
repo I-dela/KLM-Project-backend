@@ -5,10 +5,15 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @Table(name = "request")
 public class Request  {
+
+  @OneToMany(fetch = FetchType.LAZY, mappedBy = "request_id")
+  @JsonIgnore
+  private List<UserRequest> userRequests;
 
 
   @Id
@@ -52,7 +57,8 @@ public class Request  {
   public Request() {
   }
 
-  public Request(@NotNull String id, @NotNull Status status, @NotNull EquipmentType equipmentType, @NotNull Aircraft aircraft, @NotNull Location location, Equipment equipment, LocalDateTime timeStamp, LocalDateTime departure) {
+  public Request(List<UserRequest> userRequests, @NotNull String id, @NotNull Status status, @NotNull EquipmentType equipmentType, @NotNull Aircraft aircraft, @NotNull Location location, Equipment equipment, LocalDateTime timeStamp, LocalDateTime departure) {
+    this.userRequests = userRequests;
     this.id = id;
     this.status = status;
     this.equipmentType = equipmentType;
@@ -131,5 +137,13 @@ public class Request  {
 
   public void setDeparture(LocalDateTime departure) {
     this.departure = departure;
+  }
+
+  public List<UserRequest> getUserRequests() {
+    return userRequests;
+  }
+
+  public void setUserRequests(List<UserRequest> userRequests) {
+    this.userRequests = userRequests;
   }
 }

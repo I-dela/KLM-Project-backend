@@ -1,6 +1,9 @@
 package Klm1.KLMLineMaintenanceServer.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.util.List;
 
 @Entity
@@ -8,12 +11,17 @@ import java.util.List;
 public class Equipment {
 
   @OneToMany(fetch = FetchType.LAZY, mappedBy = "equipment")
+  @JsonIgnore
   private List<Request>requests;
 
   @Id
   private String serialNumber;
   private String id;
-  private int type;
+
+  @ManyToOne
+  @NotNull
+  @JoinColumn(name = "type")
+  private EquipmentType type;
 
   @Enumerated(EnumType.STRING)
   private Status status;
@@ -25,19 +33,30 @@ public class Equipment {
 
   public Equipment() {
   }
-  public Equipment(String serialNumber, String id, int type, Status status, String statusDescription, String tracker) {
+
+  public Equipment(List<Request> requests, String serialNumber, String id, @NotNull EquipmentType type, Status status, String statusDescr, String tracker) {
+    this.requests = requests;
     this.serialNumber = serialNumber;
     this.id = id;
     this.type = type;
     this.status = status;
-    this.statusDescr= statusDescription;
+    this.statusDescr = statusDescr;
     this.tracker = tracker;
   }
+
   enum Status{
     Usable , Inuse
     , Broken
   }
 
+
+  public EquipmentType getType() {
+    return type;
+  }
+
+  public void setType(EquipmentType type) {
+    this.type = type;
+  }
 
   public String getSerialNumber() {
     return serialNumber;
@@ -47,9 +66,6 @@ public class Equipment {
     return id;
   }
 
-  public int getType() {
-    return type;
-  }
 
   public Status getStatus() {
     return status;
@@ -71,9 +87,6 @@ public class Equipment {
     this.id = id;
   }
 
-  public void setType(int type) {
-    this.type = type;
-  }
 
   public void setStatus(Status status) {
     this.status = status;
@@ -85,6 +98,22 @@ public class Equipment {
 
   public void setTracker(String tracker) {
     this.tracker = tracker;
+  }
+
+  public List<Request> getRequests() {
+    return requests;
+  }
+
+  public void setRequests(List<Request> requests) {
+    this.requests = requests;
+  }
+
+  public String getStatusDescr() {
+    return statusDescr;
+  }
+
+  public void setStatusDescr(String statusDescr) {
+    this.statusDescr = statusDescr;
   }
 
   @Override

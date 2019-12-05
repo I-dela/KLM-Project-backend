@@ -1,5 +1,7 @@
 package Klm1.KLMLineMaintenanceServer.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.util.List;
 
@@ -8,6 +10,7 @@ import java.util.List;
 public class Location {
 
   @OneToMany(fetch = FetchType.LAZY, mappedBy = "location")
+  @JsonIgnore
   private List<Request> requests;
   @Id
   private String location;
@@ -21,7 +24,8 @@ public class Location {
   }
 
 
-  public Location(String location, Type type) {
+  public Location(List<Request> requests, String location, Type type) {
+    this.requests = requests;
     this.location = location;
     this.type = type;
   }
@@ -46,6 +50,14 @@ public class Location {
 
   public void setType(Type type) {
     this.type = type;
+  }
+
+  public List<Request> getRequests() {
+    return requests;
+  }
+
+  public void setRequests(List<Request> requests) {
+    this.requests = requests;
   }
 }
 

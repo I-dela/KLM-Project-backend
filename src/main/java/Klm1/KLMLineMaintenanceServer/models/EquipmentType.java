@@ -13,6 +13,11 @@ public class EquipmentType {
   @JsonIgnore
   private List<Request> requestedEquipment;
 
+
+  @OneToMany(fetch = FetchType.LAZY, mappedBy = "type")
+  @JsonIgnore
+  private List<Equipment> equipmentList;
+
   @Id
   @Column(name = "id")
   private int id ;
@@ -24,14 +29,14 @@ public class EquipmentType {
   public EquipmentType(){
   }
 
-  public EquipmentType(List<Request> requestedEquipment, int id, String group, String subgroup, String abbreviation) {
+  public EquipmentType(List<Request> requestedEquipment, List<Equipment> equipmentList, int id, String group, String subgroup, String abbreviation) {
     this.requestedEquipment = requestedEquipment;
+    this.equipmentList = equipmentList;
     this.id = id;
     this.group = group;
     this.subgroup = subgroup;
     this.abbreviation = abbreviation;
   }
-
 
   public List<Request> getRequestedEquipment() {
     return requestedEquipment;
@@ -71,5 +76,17 @@ public class EquipmentType {
 
   public void setAbbreviation(String abbreviation) {
     this.abbreviation = abbreviation;
+  }
+
+  public void setRequestedEquipment(List<Request> requestedEquipment) {
+    this.requestedEquipment = requestedEquipment;
+  }
+
+  public List<Equipment> getEquipmentList() {
+    return equipmentList;
+  }
+
+  public void setEquipmentList(List<Equipment> equipmentList) {
+    this.equipmentList = equipmentList;
   }
 }
