@@ -8,6 +8,9 @@ import java.util.List;
 
 @Entity
 @Table(name = "equipment")
+@NamedQuery(name = "find_all_equipment", query = "SELECT e FROM Equipment e")
+@NamedQuery(name = "find_equipment_by_status", query = "SELECT e FROM Equipment e WHERE e.status = :status")
+@NamedQuery(name = "find_equipment_by_type_and_status", query = "SELECT e FROM Equipment e WHERE e.type = :type AND e.status = :status")
 public class Equipment {
 
   @OneToMany(fetch = FetchType.LAZY, mappedBy = "equipment")
@@ -29,8 +32,6 @@ public class Equipment {
   private String statusDescr;
   private String tracker;
 
-
-
   public Equipment() {
   }
 
@@ -44,7 +45,7 @@ public class Equipment {
     this.tracker = tracker;
   }
 
-  enum Status{
+  public enum Status{
     Usable , Inuse
     , Broken
   }

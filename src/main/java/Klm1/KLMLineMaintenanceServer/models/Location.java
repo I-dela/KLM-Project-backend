@@ -18,11 +18,9 @@ public class Location {
   @Enumerated(EnumType.STRING)
   private Type type;
 
-
   public Location(){
 
   }
-
 
   public Location(List<Request> requests, String location, Type type) {
     this.requests = requests;

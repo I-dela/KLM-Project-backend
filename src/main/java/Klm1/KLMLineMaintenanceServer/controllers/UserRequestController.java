@@ -18,6 +18,7 @@ public class UserRequestController {
 
     @Autowired
    private  UserRequestRepository userRequestRepository ;
+
     @GetMapping("/")
     public List<UserRequest> getUserRequests(){
         return(List<UserRequest>) userRequestRepository.findAll();

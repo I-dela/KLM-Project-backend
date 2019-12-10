@@ -8,6 +8,8 @@ import java.util.Objects;
 @Entity
 @Table(name = "user_request")
 @IdClass(UserRequest.UrequestCPK.class)
+@NamedQuery(name = "find_user_request_by_request_id", query = "SELECT r FROM UserRequest r WHERE r.request_id = :request")
+@NamedQuery(name = "find_all_by_runner_accepted_requests", query = "SELECT r.request_id FROM UserRequest r WHERE r.acceptedBy = :runner_id")
 public class UserRequest  {
 
     @Id
@@ -32,11 +34,9 @@ public class UserRequest  {
     public UserRequest() {
     }
 
-    public UserRequest(@NotNull User user_id, @NotNull Request request_id, int acceptedBy, int closedBy) {
+    public UserRequest(@NotNull User user_id, @NotNull Request request_id) {
         this.user_id = user_id;
         this.request_id = request_id;
-        this.acceptedBy = acceptedBy;
-        this.closedBy = closedBy;
     }
 
     @Override

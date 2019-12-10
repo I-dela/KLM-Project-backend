@@ -27,24 +27,18 @@ public class UserController {
   public String postUsers(@RequestBody User user) {
 
     userRepository.save(user);
-
     return  "User saved succesfully";
   }
 
   @PatchMapping(value = "/{userId}")
-  public String updateUser(@PathVariable String userId,@RequestBody User user){
-
+  public String updateUser(@PathVariable String userId, @RequestBody User user){
     userRepository.save(user);
-
     return "updated successfully";
-
   }
 
   @DeleteMapping(value = "/{id}")
   public String deleteUser(@PathVariable int id){
-
     userRepository.deleteById(id);
-
     return "Delete is successfull";
   }
 

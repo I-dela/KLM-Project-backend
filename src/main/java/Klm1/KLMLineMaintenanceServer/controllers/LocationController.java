@@ -26,10 +26,6 @@ public class LocationController {
   public String postLocation(@RequestBody Location location) {
 
     locationRepository.save(location);
-
-
-
-
     return  "saved succesfully";
   }
 

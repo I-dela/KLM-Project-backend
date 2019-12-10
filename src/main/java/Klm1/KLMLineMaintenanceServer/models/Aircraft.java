@@ -16,7 +16,6 @@ public class Aircraft {
     @Id
     private int id;
 
-
     private String name;
 
     @Enumerated(EnumType.STRING)

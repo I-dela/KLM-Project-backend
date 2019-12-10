@@ -1,26 +1,34 @@
 package Klm1.KLMLineMaintenanceServer.models;
 
+import Klm1.KLMLineMaintenanceServer.models.helper.PrefixSequenceIDGenerator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.hibernate.annotations.GenericGenerator;
 
+import javax.annotation.processing.Generated;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.sql.Timestamp;
 import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.List;
 
 @Entity
 @Table(name = "request")
+@NamedQuery(name = "find_all_requests", query = "SELECT r FROM Request r")
+@NamedQuery(name = "find_requests_by_status", query = "SELECT r FROM Request r WHERE r.status = :status")
 public class Request  {
 
-  @OneToMany(fetch = FetchType.LAZY, mappedBy = "request_id")
-  @JsonIgnore
-  private List<UserRequest> userRequests;
-
-
-  @Id
   @Column(name = "id")
-  @NotNull
+  @Id
+  @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "Request_seq")
+  @GenericGenerator(name = "Request_seq",
+          strategy = "Klm1.KLMLineMaintenanceServer.models.helper.PrefixSequenceIDGenerator",
+          parameters = {
+                  @org.hibernate.annotations.Parameter(name = PrefixSequenceIDGenerator.INCREMENT_PARAM, value = "1"),
+                  @org.hibernate.annotations.Parameter(name = PrefixSequenceIDGenerator.VALUE_PREFIX_PARAMETER, value = "GE-"),
+                  @org.hibernate.annotations.Parameter(name = PrefixSequenceIDGenerator.NUMBER_FORMAT_PARAMETER, value = "%01d")
+          })
   private String id;
-
 
   @Column(name = "status")
   @NotNull
@@ -37,7 +45,6 @@ public class Request  {
   @JoinColumn(name = "aircraftType")
   private  Aircraft aircraft;
 
-
   @ManyToOne
   @NotNull
   @JoinColumn(name = "requestedLocation")
@@ -48,31 +55,25 @@ public class Request  {
   private Equipment equipment;
 
   @Column(name = "timeStamp")
-  private LocalDateTime timeStamp;
+  private Date timeStamp = new Date();
 
   @Column(name = "departure")
-  private LocalDateTime departure;
-
+  private Date departure;
 
   public Request() {
   }
 
-  public Request(List<UserRequest> userRequests, @NotNull String id, @NotNull Status status, @NotNull EquipmentType equipmentType, @NotNull Aircraft aircraft, @NotNull Location location, Equipment equipment, LocalDateTime timeStamp, LocalDateTime departure) {
-    this.userRequests = userRequests;
-    this.id = id;
+  public Request(@NotNull Status status, @NotNull EquipmentType equipmentType, @NotNull Aircraft aircraft, @NotNull Location location, Equipment equipment, Date departure) {
     this.status = status;
     this.equipmentType = equipmentType;
     this.aircraft = aircraft;
     this.location = location;
     this.equipment = equipment;
-    this.timeStamp = timeStamp;
     this.departure = departure;
   }
 
-  private enum Status{
+  public enum Status{
     OP, IP, CAN, CL
-
-
   }
 
   public String getId() {
@@ -123,27 +124,34 @@ public class Request  {
     this.equipment = equipment;
   }
 
-  public LocalDateTime getTimeStamp() {
+  public Date getTimeStamp() {
     return timeStamp;
   }
 
-  public void setTimeStamp(LocalDateTime timeStamp) {
+  public void setTimeStamp(Date timeStamp) {
     this.timeStamp = timeStamp;
   }
 
-  public LocalDateTime getDeparture() {
+  public Date getDeparture() {
     return departure;
   }
 
-  public void setDeparture(LocalDateTime departure) {
+  public void setDeparture(Date departure) {
     this.departure = departure;
   }
 
-  public List<UserRequest> getUserRequests() {
-    return userRequests;
-  }
-
-  public void setUserRequests(List<UserRequest> userRequests) {
-    this.userRequests = userRequests;
+  @Override
+  public String toString() {
+    return "Request{" +
+//            "userRequests=" + userRequests +
+            " id='" + id + '\'' +
+            ", status=" + status +
+            ", equipmentType=" + equipmentType +
+            ", aircraft=" + aircraft +
+            ", location=" + location +
+            ", equipment=" + equipment +
+            ", timeStamp=" + timeStamp +
+            ", departure=" + departure +
+            '}';
   }
 }
