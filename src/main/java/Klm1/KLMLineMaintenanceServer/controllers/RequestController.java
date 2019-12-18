@@ -22,7 +22,7 @@ public class RequestController {
     RequestRepository requestRepository;
 
     @GetMapping("/")
-    public List<Request> getRequests () {
+    public List<Request> getRequests() {
         return (List<Request>) requestRepository.findAll();
     }
 
@@ -35,7 +35,7 @@ public class RequestController {
     }
 
     @GetMapping("/{id}")
-    public Request getRequest(@PathVariable String id){
+    public Request getRequest(@PathVariable String id) {
         return requestRepository.findById(id);
     }
 

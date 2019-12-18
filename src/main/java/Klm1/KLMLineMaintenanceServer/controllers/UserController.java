@@ -40,18 +40,27 @@ public class UserController {
 
 
 
-  @PostMapping(value = "/users")
-  public String postUsers(@RequestBody User user) {
+    @PostMapping(value = "/users")
+    public String postUsers(@RequestBody User user) {
+        List<User> users = getUsers();
 
-    userRepository.save(user);
-    return  "User saved succesfully";
-  }
+        String lastId = users.get(users.size() - 1).getId();
+        int lastIdNr = Integer.parseInt(lastId.substring(3));
 
-  @PatchMapping(value = "/users/{userId}")
-  public String updateUser(@PathVariable String userId, @RequestBody User user){
-    userRepository.save(user);
-    return "updated successfully";
-  }
+        String newId = String.format("KLM%05d", ++lastIdNr);
+        user.setId(newId);
+
+        System.out.println("Id: " + user.getId());
+
+        userRepository.save(user);
+        return "User saved succesfully";
+    }
+
+    @PutMapping(value = "/users")
+    public String updateUser( @RequestBody User user) {
+        userRepository.save(user);
+        return "updated successfully";
+    }
 
   @DeleteMapping(value = "/users/{id}")
   public String deleteUser(@PathVariable String id){

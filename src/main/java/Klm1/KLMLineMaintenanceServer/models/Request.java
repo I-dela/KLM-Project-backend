@@ -16,142 +16,142 @@ import java.util.List;
 @Table(name = "request")
 @NamedQuery(name = "find_all_requests", query = "SELECT r FROM Request r")
 @NamedQuery(name = "find_requests_by_status", query = "SELECT r FROM Request r WHERE r.status = :status")
-public class Request  {
+public class Request {
 
-  @Column(name = "id")
-  @Id
-  @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "Request_seq")
-  @GenericGenerator(name = "Request_seq",
-          strategy = "Klm1.KLMLineMaintenanceServer.models.helper.PrefixSequenceIDGenerator",
-          parameters = {
-                  @org.hibernate.annotations.Parameter(name = PrefixSequenceIDGenerator.INCREMENT_PARAM, value = "1"),
-                  @org.hibernate.annotations.Parameter(name = PrefixSequenceIDGenerator.VALUE_PREFIX_PARAMETER, value = "GE-"),
-                  @org.hibernate.annotations.Parameter(name = PrefixSequenceIDGenerator.NUMBER_FORMAT_PARAMETER, value = "%01d")
-          })
-  private String id;
+    @Column(name = "id")
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "Request_seq")
+    @GenericGenerator(name = "Request_seq",
+            strategy = "Klm1.KLMLineMaintenanceServer.models.helper.PrefixSequenceIDGenerator",
+            parameters = {
+                    @org.hibernate.annotations.Parameter(name = PrefixSequenceIDGenerator.INCREMENT_PARAM, value = "1"),
+                    @org.hibernate.annotations.Parameter(name = PrefixSequenceIDGenerator.VALUE_PREFIX_PARAMETER, value = "GE-"),
+                    @org.hibernate.annotations.Parameter(name = PrefixSequenceIDGenerator.NUMBER_FORMAT_PARAMETER, value = "%01d")
+            })
+    private String id;
 
-  @Column(name = "status")
-  @NotNull
-  @Enumerated(EnumType.STRING)
-  private Status status;
+    @Column(name = "status")
+    @NotNull
+    @Enumerated(EnumType.STRING)
+    private Status status;
 
-  @ManyToOne
-  @NotNull
-  @JoinColumn(name = "requestedEquipment")
-  private EquipmentType equipmentType;
+    @ManyToOne
+    @NotNull
+    @JoinColumn(name = "requestedEquipment")
+    private EquipmentType equipmentType;
 
-  @ManyToOne
-  @NotNull
-  @JoinColumn(name = "aircraftType")
-  private  Aircraft aircraft;
+    @ManyToOne
+    @NotNull
+    @JoinColumn(name = "aircraftType")
+    private Aircraft aircraft;
 
-  @ManyToOne
-  @NotNull
-  @JoinColumn(name = "requestedLocation")
-  private Location location;
+    @ManyToOne
+    @NotNull
+    @JoinColumn(name = "requestedLocation")
+    private Location location;
 
-  @ManyToOne
-  @JoinColumn(name = "usedEquipment")
-  private Equipment equipment;
+    @ManyToOne
+    @JoinColumn(name = "usedEquipment")
+    private Equipment equipment;
 
-  @Column(name = "timeStamp")
-  private Date timeStamp = new Date();
+    @Column(name = "timeStamp")
+    private Date timeStamp = new Date();
 
-  @Column(name = "departure")
-  private Date departure;
+    @Column(name = "departure")
+    private Date departure;
 
-  public Request() {
-  }
+    public Request() {
+    }
 
-  public Request(@NotNull Status status, @NotNull EquipmentType equipmentType, @NotNull Aircraft aircraft, @NotNull Location location, Equipment equipment, Date departure) {
-    this.status = status;
-    this.equipmentType = equipmentType;
-    this.aircraft = aircraft;
-    this.location = location;
-    this.equipment = equipment;
-    this.departure = departure;
-  }
+    public Request(@NotNull Status status, @NotNull EquipmentType equipmentType, @NotNull Aircraft aircraft, @NotNull Location location, Equipment equipment, Date departure) {
+        this.status = status;
+        this.equipmentType = equipmentType;
+        this.aircraft = aircraft;
+        this.location = location;
+        this.equipment = equipment;
+        this.departure = departure;
+    }
 
-  public enum Status{
-    OP, IP, CAN, CL
-  }
+    public enum Status {
+        OP, IP, CAN, CL
+    }
 
-  public String getId() {
-    return id;
-  }
+    public String getId() {
+        return id;
+    }
 
-  public void setId(String id) {
-    this.id = id;
-  }
+    public void setId(String id) {
+        this.id = id;
+    }
 
-  public Status getStatus() {
-    return status;
-  }
+    public Status getStatus() {
+        return status;
+    }
 
-  public void setStatus(Status status) {
-    this.status = status;
-  }
+    public void setStatus(Status status) {
+        this.status = status;
+    }
 
-  public EquipmentType getEquipmentType() {
-    return equipmentType;
-  }
+    public EquipmentType getEquipmentType() {
+        return equipmentType;
+    }
 
-  public void setEquipmentType(EquipmentType equipmentType) {
-    this.equipmentType = equipmentType;
-  }
+    public void setEquipmentType(EquipmentType equipmentType) {
+        this.equipmentType = equipmentType;
+    }
 
-  public Aircraft getAircraft() {
-    return aircraft;
-  }
+    public Aircraft getAircraft() {
+        return aircraft;
+    }
 
-  public void setAircraft(Aircraft aircraft) {
-    this.aircraft = aircraft;
-  }
+    public void setAircraft(Aircraft aircraft) {
+        this.aircraft = aircraft;
+    }
 
-  public Location getLocation() {
-    return location;
-  }
+    public Location getLocation() {
+        return location;
+    }
 
-  public void setLocation(Location location) {
-    this.location = location;
-  }
+    public void setLocation(Location location) {
+        this.location = location;
+    }
 
-  public Equipment getEquipment() {
-    return equipment;
-  }
+    public Equipment getEquipment() {
+        return equipment;
+    }
 
-  public void setEquipment(Equipment equipment) {
-    this.equipment = equipment;
-  }
+    public void setEquipment(Equipment equipment) {
+        this.equipment = equipment;
+    }
 
-  public Date getTimeStamp() {
-    return timeStamp;
-  }
+    public Date getTimeStamp() {
+        return timeStamp;
+    }
 
-  public void setTimeStamp(Date timeStamp) {
-    this.timeStamp = timeStamp;
-  }
+    public void setTimeStamp(Date timeStamp) {
+        this.timeStamp = timeStamp;
+    }
 
-  public Date getDeparture() {
-    return departure;
-  }
+    public Date getDeparture() {
+        return departure;
+    }
 
-  public void setDeparture(Date departure) {
-    this.departure = departure;
-  }
+    public void setDeparture(Date departure) {
+        this.departure = departure;
+    }
 
-  @Override
-  public String toString() {
-    return "Request{" +
+    @Override
+    public String toString() {
+        return "Request{" +
 //            "userRequests=" + userRequests +
-            " id='" + id + '\'' +
-            ", status=" + status +
-            ", equipmentType=" + equipmentType +
-            ", aircraft=" + aircraft +
-            ", location=" + location +
-            ", equipment=" + equipment +
-            ", timeStamp=" + timeStamp +
-            ", departure=" + departure +
-            '}';
-  }
+                " id='" + id + '\'' +
+                ", status=" + status +
+                ", equipmentType=" + equipmentType +
+                ", aircraft=" + aircraft +
+                ", location=" + location +
+                ", equipment=" + equipment +
+                ", timeStamp=" + timeStamp +
+                ", departure=" + departure +
+                '}';
+    }
 }

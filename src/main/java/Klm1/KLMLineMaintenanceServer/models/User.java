@@ -31,61 +31,78 @@ public class User {
   @Column(name = "password")
   private String password;
 
-  public User() {
-  }
+    @Column(name = "status")
+    private String status;
 
-  public User(String id, String name, Role role, String password) {
-    this.id = id;
-    this.name = name;
-    this.role = role;
-    this.password = password;
-  }
+    public User() {
+    }
 
-  enum Role{
-    GE, RUN, ADM
-  }
-
-  public String getId() {
-    return id;
-  }
-
-  public String getName() {
-    return name;
-  }
+    public User(List<UserRequest> userRequests, String id, String name, Role role, String password, String status) {
+        this.id = id;
+        this.name = name;
+        this.role = role;
+        this.password = password;
+        this.status = status;
+    }
 
 
-  public Role getRole() {
-    return role;
-  }
 
-  public String getPassword() {
-    return password;
-  }
+    enum Role {
+        GE, RUN, ADM
+    }
 
-  public void setName(String name) {
-    this.name = name;
-  }
+    public String getId() {
+        return id;
+    }
 
-  public void setPassword(String password) {
-    this.password = password;
-  }
+    public String getName() {
+        return name;
+    }
 
-  public List<UserRequest> getUserRequests() {
-    return userRequests;
-  }
+    public Role getRole() {
+        return role;
+    }
 
-  public void setUserRequests(List<UserRequest> userRequests) {
-    this.userRequests = userRequests;
-  }
+    public String getPassword() {
+        return password;
+    }
 
-  public void setRole(Role role) {
-    this.role = role;
-  }
+    public void setName(String name) {
+        this.name = name;
+    }
 
-  @Override
-  public String toString() {
-    return this.name;
-  }
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public List<UserRequest> getUserRequests() {
+        return userRequests;
+    }
+
+    public void setUserRequests(List<UserRequest> userRequests) {
+        this.userRequests = userRequests;
+    }
+
+    public void setRole(Role role) {
+        this.role = role;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    @Override
+    public String toString() {
+        return this.name;
+    }
 
 
 

@@ -47,7 +47,7 @@ public class UserRequest  {
     public static class UrequestCPK implements Serializable{
 
 
-        private int user_id;
+        private String user_id;
 
 
         private String request_id;
@@ -55,7 +55,7 @@ public class UserRequest  {
         public UrequestCPK() {
         }
 
-        public UrequestCPK(int user_id, String request_id) {
+        public UrequestCPK(String user_id, String request_id) {
             this.user_id = user_id;
             this.request_id = request_id;
         }

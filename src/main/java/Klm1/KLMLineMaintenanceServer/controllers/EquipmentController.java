@@ -1,6 +1,7 @@
 package Klm1.KLMLineMaintenanceServer.controllers;
 
 import Klm1.KLMLineMaintenanceServer.models.Equipment;
+import Klm1.KLMLineMaintenanceServer.models.helper.EquipmentComparator;
 import Klm1.KLMLineMaintenanceServer.repositories.EquipmentRepository;
 import org.hibernate.annotations.Parameter;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +22,10 @@ public class EquipmentController {
 
   @GetMapping("/")
   public List<Equipment> getEquipments(){
-    return(List<Equipment>) equipmentRepository.findAll();
+    List<Equipment> equipmentList = equipmentRepository.findAll();
+    equipmentList.sort(new EquipmentComparator());
+
+    return equipmentList;
   }
 
   @GetMapping("/{serialNumber}")
@@ -40,10 +44,10 @@ public class EquipmentController {
     }
   }
 
-  @PatchMapping("/{serialNumber}")
+  @PutMapping("/{serialNumber}")
   public ResponseEntity updateEquipment(@PathVariable String serialNumber, @RequestBody Equipment equipment){
-    Equipment equipmentOptional = equipmentRepository.findById(serialNumber);
-    if (equipmentOptional != null) {
+    Equipment existingEquipment = equipmentRepository.findById(serialNumber);
+    if (existingEquipment != null) {
       equipmentRepository.save(equipment);
       return ResponseEntity.status(HttpStatus.OK).body("Equipment with id:" + serialNumber + " was updated");
     } else {

@@ -17,11 +17,11 @@ public class UserRequestController {
 
 
     @Autowired
-   private  UserRequestRepository userRequestRepository ;
+    private UserRequestRepository userRequestRepository;
 
     @GetMapping("/")
-    public List<UserRequest> getUserRequests(){
-        return(List<UserRequest>) userRequestRepository.findAll();
+    public List<UserRequest> getUserRequests() {
+        return (List<UserRequest>) userRequestRepository.findAll();
 
     }
 }
