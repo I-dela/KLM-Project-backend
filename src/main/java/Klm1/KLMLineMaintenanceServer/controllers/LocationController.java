@@ -12,38 +12,38 @@ import java.util.List;
 @CrossOrigin(origins = "http://localhost:4200")
 public class LocationController {
 
-  @Autowired
-  private LocationRepository locationRepository;
+    @Autowired
+    private LocationRepository locationRepository;
 
 
-  @GetMapping("/")
-  public List<Location> getLocation() {
-    System.out.println(locationRepository.findAll());
-    return (List<Location>) locationRepository.findAll();
-  }
+    @GetMapping("/")
+    public List<Location> getLocation() {
+        System.out.println(locationRepository.findAll());
+        return (List<Location>) locationRepository.findAll();
+    }
 
-  @PostMapping(value = "/")
-  public String postLocation(@RequestBody Location location) {
+    @PostMapping(value = "/")
+    public String postLocation(@RequestBody Location location) {
 
-    locationRepository.save(location);
-    return  "saved succesfully";
-  }
+        locationRepository.save(location);
+        return "saved succesfully";
+    }
 
-  @PutMapping(value = "/")
-  public String updateLocation(@RequestBody Location location){
+    @PutMapping(value = "/")
+    public String updateLocation(@RequestBody Location location) {
 
-    locationRepository.save(location);
+        locationRepository.save(location);
 
-    return "updated successfully";
+        return "updated successfully";
 
-  }
+    }
 
-  @DeleteMapping(value = "/{location}")
-  public String deleteLocation(@PathVariable String location){
+    @DeleteMapping(value = "/{location}")
+    public String deleteLocation(@PathVariable String location) {
 
-    locationRepository.deleteById(location);
+        locationRepository.deleteById(location);
 
-    return "Delete is successfull";
-  }
+        return "Delete is successfull";
+    }
 
 }

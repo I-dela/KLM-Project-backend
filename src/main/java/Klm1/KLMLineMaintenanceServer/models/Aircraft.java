@@ -39,8 +39,8 @@ public class Aircraft {
     }
 
     enum Type {
-    NA, Wide_body, Narrow_body
-  }
+        NA, Wide_body, Narrow_body
+    }
 
     public int getId() {
         return id;
@@ -63,17 +63,17 @@ public class Aircraft {
     }
 
 
-  public void setType(Type type) {
-    this.type = type;
-  }
+    public void setType(Type type) {
+        this.type = type;
+    }
 
-  public String getManufacturer() {
-    return manufacturer;
-  }
+    public String getManufacturer() {
+        return manufacturer;
+    }
 
-  public void setManufacturer(String manufacturer) {
-    this.manufacturer = manufacturer;
-  }
+    public void setManufacturer(String manufacturer) {
+        this.manufacturer = manufacturer;
+    }
 
     public List<Request> getRequests() {
         return requests;

@@ -14,27 +14,27 @@ import java.util.List;
 @CrossOrigin(origins = "http://localhost:4200")
 public class AircraftController {
 
-  @Autowired
-  private AircraftRepository aircraftRepository;
+    @Autowired
+    private AircraftRepository aircraftRepository;
 
 
-  @GetMapping("/")
-  public List<Aircraft> getAircraftList(){
-    return (List<Aircraft>) aircraftRepository.findAll();
-  }
-
-  @GetMapping("/{id}")
-  public Aircraft getAircraft(@PathVariable int id){
-    return aircraftRepository.findById(id).orElse(null);
-  }
-
-  @PostMapping("/")
-  public ResponseEntity postAircraft(@RequestBody Aircraft aircraft){
-    try {
-      aircraftRepository.save(aircraft);
-      return ResponseEntity.ok(HttpStatus.CREATED);
-    } catch (Exception e) {
-      return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Something went wrong posting Aircraft with id: " + aircraft.getId());
+    @GetMapping("/")
+    public List<Aircraft> getAircraftList() {
+        return (List<Aircraft>) aircraftRepository.findAll();
     }
-  }
+
+    @GetMapping("/{id}")
+    public Aircraft getAircraft(@PathVariable int id) {
+        return aircraftRepository.findById(id).orElse(null);
+    }
+
+    @PostMapping("/")
+    public ResponseEntity postAircraft(@RequestBody Aircraft aircraft) {
+        try {
+            aircraftRepository.save(aircraft);
+            return ResponseEntity.ok(HttpStatus.CREATED);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Something went wrong posting Aircraft with id: " + aircraft.getId());
+        }
+    }
 }

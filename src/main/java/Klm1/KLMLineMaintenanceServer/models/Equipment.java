@@ -13,114 +13,113 @@ import java.util.List;
 @NamedQuery(name = "find_equipment_by_type_and_status", query = "SELECT e FROM Equipment e WHERE e.type = :type AND e.status = :status")
 public class Equipment {
 
-  @OneToMany(fetch = FetchType.LAZY, mappedBy = "equipment")
-  @JsonIgnore
-  private List<Request>requests;
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "equipment")
+    @JsonIgnore
+    private List<Request> requests;
 
-  @Id
-  private String serialNumber;
-  private String id;
+    @Id
+    private String serialNumber;
+    private String id;
 
-  @ManyToOne
-  @NotNull
-  @JoinColumn(name = "type")
-  private EquipmentType type;
+    @ManyToOne
+    @NotNull
+    @JoinColumn(name = "type")
+    private EquipmentType type;
 
-  @Enumerated(EnumType.STRING)
-  private Status status;
+    @Enumerated(EnumType.STRING)
+    private Status status;
 
-  private String statusDescr;
-  private String tracker;
+    private String statusDescr;
+    private String tracker;
 
-  public Equipment() {
-  }
+    public Equipment() {
+    }
 
-  public Equipment(List<Request> requests, String serialNumber, String id, @NotNull EquipmentType type, Status status, String statusDescr, String tracker) {
-    this.requests = requests;
-    this.serialNumber = serialNumber;
-    this.id = id;
-    this.type = type;
-    this.status = status;
-    this.statusDescr = statusDescr;
-    this.tracker = tracker;
-  }
+    public Equipment(List<Request> requests, String serialNumber, String id, @NotNull EquipmentType type, Status status, String statusDescr, String tracker) {
+        this.requests = requests;
+        this.serialNumber = serialNumber;
+        this.id = id;
+        this.type = type;
+        this.status = status;
+        this.statusDescr = statusDescr;
+        this.tracker = tracker;
+    }
 
-  public enum Status{
-    Usable , Inuse
-    , Broken
-  }
-
-
-  public EquipmentType getType() {
-    return type;
-  }
-
-  public void setType(EquipmentType type) {
-    this.type = type;
-  }
-
-  public String getSerialNumber() {
-    return serialNumber;
-  }
-
-  public String getId() {
-    return id;
-  }
+    public enum Status {
+        Usable, Inuse, Broken
+    }
 
 
-  public Status getStatus() {
-    return status;
-  }
+    public EquipmentType getType() {
+        return type;
+    }
 
-  public String getStatusDescription() {
-    return statusDescr;
-  }
+    public void setType(EquipmentType type) {
+        this.type = type;
+    }
 
-  public String getTracker() {
-    return tracker;
-  }
+    public String getSerialNumber() {
+        return serialNumber;
+    }
 
-  public void setSerialNumber(String serialNumber) {
-    this.serialNumber = serialNumber;
-  }
-
-  public void setId(String id) {
-    this.id = id;
-  }
+    public String getId() {
+        return id;
+    }
 
 
-  public void setStatus(Status status) {
-    this.status = status;
-  }
+    public Status getStatus() {
+        return status;
+    }
 
-  public void setStatusDescription(String statusDescription) {
-    this.statusDescr = statusDescription;
-  }
+    public String getStatusDescription() {
+        return statusDescr;
+    }
 
-  public void setTracker(String tracker) {
-    this.tracker = tracker;
-  }
+    public String getTracker() {
+        return tracker;
+    }
 
-  public List<Request> getRequests() {
-    return requests;
-  }
+    public void setSerialNumber(String serialNumber) {
+        this.serialNumber = serialNumber;
+    }
 
-  public void setRequests(List<Request> requests) {
-    this.requests = requests;
-  }
+    public void setId(String id) {
+        this.id = id;
+    }
 
-  public String getStatusDescr() {
-    return statusDescr;
-  }
 
-  public void setStatusDescr(String statusDescr) {
-    this.statusDescr = statusDescr;
-  }
+    public void setStatus(Status status) {
+        this.status = status;
+    }
 
-  @Override
-  public String toString() {
-    return this.id;
-  }
+    public void setStatusDescription(String statusDescription) {
+        this.statusDescr = statusDescription;
+    }
+
+    public void setTracker(String tracker) {
+        this.tracker = tracker;
+    }
+
+    public List<Request> getRequests() {
+        return requests;
+    }
+
+    public void setRequests(List<Request> requests) {
+        this.requests = requests;
+    }
+
+    public String getStatusDescr() {
+        return statusDescr;
+    }
+
+    public void setStatusDescr(String statusDescr) {
+        this.statusDescr = statusDescr;
+    }
+
+    @Override
+    public String toString() {
+        return this.id;
+    }
 }
 
 
