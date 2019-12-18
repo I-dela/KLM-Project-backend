@@ -78,7 +78,7 @@ public class EquipmentType {
     this.abbreviation = abbreviation;
   }
 
-  public void setRequestedEquipment(List<Request> requestedEquipment) {
+  public void setRequestedEquipment(List<Request> requestedEquipment){
     this.requestedEquipment = requestedEquipment;
   }
 

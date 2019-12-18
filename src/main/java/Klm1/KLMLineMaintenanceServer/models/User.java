@@ -8,6 +8,9 @@ import java.util.List;
 
 @Entity
 @Table(name = "User")
+@NamedQueries({
+       @NamedQuery(name="find_all_users", query = "select u from User u "),
+})
 public class User {
 
   @OneToMany(fetch = FetchType.LAZY, mappedBy = "user_id")
@@ -16,8 +19,7 @@ public class User {
 
   @Id
   @Column(name = "id")
-  @GeneratedValue
-  private int id;
+  private String id;
 
   @Column(name = "name")
   private String name;
@@ -32,8 +34,8 @@ public class User {
   public User() {
   }
 
-  public User(List<UserRequest> userRequests, String name, Role role, String password) {
-    this.userRequests = userRequests;
+  public User(String id, String name, Role role, String password) {
+    this.id = id;
     this.name = name;
     this.role = role;
     this.password = password;
@@ -43,7 +45,7 @@ public class User {
     GE, RUN, ADM
   }
 
-  public int getId() {
+  public String getId() {
     return id;
   }
 

@@ -40,16 +40,16 @@ public class EquipmentController {
     }
   }
 
-//  @PatchMapping("/{serialNumber}")
-//  public ResponseEntity updateEquipment(@PathVariable String serialNumber, @RequestBody Equipment equipment){
-//    Optional<Equipment> equipmentOptional = equipmentRepository.findById(serialNumber);
-//    if (equipmentOptional.isPresent()) {
-//      equipmentRepository.save(equipment);
-//      return ResponseEntity.status(HttpStatus.OK).body("Equipment with id:" + serialNumber + " was updated");
-//    } else {
-//      return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Equipment with id:" + serialNumber + " could not be found");
-//    }
-//  }
+  @PatchMapping("/{serialNumber}")
+  public ResponseEntity updateEquipment(@PathVariable String serialNumber, @RequestBody Equipment equipment){
+    Equipment equipmentOptional = equipmentRepository.findById(serialNumber);
+    if (equipmentOptional != null) {
+      equipmentRepository.save(equipment);
+      return ResponseEntity.status(HttpStatus.OK).body("Equipment with id:" + serialNumber + " was updated");
+    } else {
+      return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Equipment with id:" + serialNumber + " could not be found");
+    }
+  }
 
   @DeleteMapping("/{serialNumber}")
   public String deleteEquipment(@PathVariable String serialNumber){

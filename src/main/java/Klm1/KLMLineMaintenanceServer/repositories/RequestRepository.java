@@ -48,6 +48,7 @@ public class RequestRepository {
 
     //  Delete request
 
+
     //  Get Open requests
     public List<Request> findRequestsByStatus(Request.Status status) {
         TypedQuery<Request> namedQuery = em.createNamedQuery("find_requests_by_status", Request.class);
