@@ -25,7 +25,7 @@ public class AircraftController {
 
     @GetMapping("/{id}")
     public Aircraft getAircraft(@PathVariable int id) {
-        return aircraftRepository.findById(id).orElse(null);
+        return aircraftRepository.findById(id);
     }
 
     @PostMapping("/")

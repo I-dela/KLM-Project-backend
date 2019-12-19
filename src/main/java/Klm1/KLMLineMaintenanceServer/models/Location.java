@@ -6,7 +6,10 @@ import javax.persistence.*;
 import java.util.List;
 
 @Entity
-@Table(name = "location")
+@Table(name = "Location")
+@NamedQueries({
+        @NamedQuery(name="find_all_locations", query = "select l from Location l"),
+})
 public class Location {
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "location")

@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-@RequestMapping("/userRequest")
 @CrossOrigin(origins = "http://localhost:4200")
 public class UserRequestController {
 
@@ -19,9 +18,11 @@ public class UserRequestController {
     @Autowired
     private UserRequestRepository userRequestRepository;
 
-    @GetMapping("/")
+    @GetMapping("/userRequests")
     public List<UserRequest> getUserRequests() {
         return (List<UserRequest>) userRequestRepository.findAll();
 
     }
+
+
 }

@@ -8,9 +8,12 @@ import java.util.Objects;
 @Entity
 @Table(name = "user_request")
 @IdClass(UserRequest.UrequestCPK.class)
-@NamedQuery(name = "find_user_request_by_request_id", query = "SELECT r FROM UserRequest r WHERE r.request_id = :request")
-@NamedQuery(name = "find_all_by_runner_accepted_requests", query = "SELECT r.request_id FROM UserRequest r WHERE r.acceptedBy = :runner_id")
-public class UserRequest  {
+@NamedQueries({
+        @NamedQuery(name = "find_user_request_by_request_id", query = "SELECT r FROM UserRequest r WHERE r.request_id = :request"),
+        @NamedQuery(name = "find_all_by_runner_accepted_requests", query = "SELECT r.request_id FROM UserRequest r WHERE r.acceptedBy = :runner_id"),
+        @NamedQuery(name = "find_all_user_requests", query = "select ur from UserRequest ur ")
+})
+public class UserRequest {
 
     @Id
     @ManyToOne
@@ -25,10 +28,10 @@ public class UserRequest  {
     private Request request_id;
 
 
-    @Column(name = "acceptedBy" , nullable = true)
+    @Column(name = "acceptedBy", nullable = true)
     private int acceptedBy;
 
-    @Column(name = "closedBy" , nullable = true)
+    @Column(name = "closedBy", nullable = true)
     private int closedBy;
 
     public UserRequest() {
@@ -44,7 +47,7 @@ public class UserRequest  {
         return super.toString();
     }
 
-    public static class UrequestCPK implements Serializable{
+    public static class UrequestCPK implements Serializable {
 
 
         private String user_id;
