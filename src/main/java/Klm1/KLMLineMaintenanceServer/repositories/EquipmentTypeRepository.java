@@ -1,10 +1,11 @@
 package Klm1.KLMLineMaintenanceServer.repositories;
 
-import Klm1.KLMLineMaintenanceServer.models.Equipment;
 import Klm1.KLMLineMaintenanceServer.models.EquipmentType;
-import org.springframework.data.repository.CrudRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import javax.persistence.EntityManager;
+import javax.persistence.TypedQuery;
 import javax.transaction.Transactional;
 import java.util.List;
 
@@ -13,8 +14,13 @@ import java.util.List;
 @Transactional
 public class EquipmentTypeRepository  {
 
+    @Autowired
+    EntityManager entityManager;
+
     public List<EquipmentType> findAll(){
-        return null;
+        TypedQuery<EquipmentType> query= entityManager.createQuery("select et from EquipmentType et", EquipmentType.class);
+
+        return query.getResultList();
     }
 
     public void save(EquipmentType equipmentType){

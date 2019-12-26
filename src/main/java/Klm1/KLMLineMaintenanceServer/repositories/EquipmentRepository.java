@@ -41,6 +41,8 @@ public class EquipmentRepository {
         return em.merge(equipment);
     }
 
+
+
     //  Delete equipment
     public void deleteById(String id) {
         Equipment equipment = em.find(Equipment.class, id);

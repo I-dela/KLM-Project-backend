@@ -14,8 +14,14 @@ import java.util.List;
 
 @Entity
 @Table(name = "request")
-@NamedQuery(name = "find_all_requests", query = "SELECT r FROM Request r")
-@NamedQuery(name = "find_requests_by_status", query = "SELECT r FROM Request r WHERE r.status = :status")
+@NamedQueries({
+        @NamedQuery(name = "find_all_requests", query = "SELECT r FROM Request r"),
+        @NamedQuery(name= "find_all_requests_group_by_departure", query = "select r from Request r order by r.departure asc"),
+        @NamedQuery(name = "find_requests_by_status", query = "SELECT r FROM Request r WHERE r.status = :status"),
+        @NamedQuery(name = "change_equipment", query = "update Request r set r.equipment=?1 where r.id=?2")
+
+})
+
 public class Request {
 
     @Column(name = "id")

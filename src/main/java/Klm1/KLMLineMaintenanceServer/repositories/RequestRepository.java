@@ -1,5 +1,6 @@
 package Klm1.KLMLineMaintenanceServer.repositories;
 
+import Klm1.KLMLineMaintenanceServer.models.Equipment;
 import Klm1.KLMLineMaintenanceServer.models.Request;
 import Klm1.KLMLineMaintenanceServer.models.User;
 import Klm1.KLMLineMaintenanceServer.models.UserRequest;
@@ -7,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
+import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 import javax.transaction.Transactional;
 import java.util.List;
@@ -15,8 +17,10 @@ import java.util.List;
 @Transactional
 public class RequestRepository {
 
+
+
     @Autowired
-    private EntityManager em;
+    private EntityManager em ;
 
     //  Get all
     public List<Request> findAll() {
@@ -46,6 +50,18 @@ public class RequestRepository {
         return em.merge(request);
     }
 
+    //Change equipment
+    public void setRequestEquipment(Request request, Equipment equipment){
+       Query query = em.createQuery("update Request r set r.equipment=?1 where r.id=?2");
+
+
+       query.setParameter(1,equipment);
+
+       query.setParameter(2,request.getId());
+
+       em.merge(request);
+    }
+
     //  Delete request
 
 
@@ -70,4 +86,12 @@ public class RequestRepository {
         TypedQuery<Request> namedQuery = em.createNamedQuery("find_all_by_runner_accepted_requests", Request.class);
         return namedQuery.setParameter("runner_id", runnerId).getResultList();
     }
+
+    public List<Request> find_requests_order_by_departure(){
+        TypedQuery<Request> query= em.createQuery("select r from Request r order by r.departure asc", Request.class);
+
+        return query.getResultList();
+    }
+
+
 }

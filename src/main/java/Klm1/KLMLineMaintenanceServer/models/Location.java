@@ -9,6 +9,7 @@ import java.util.List;
 @Table(name = "Location")
 @NamedQueries({
         @NamedQuery(name="find_all_locations", query = "select l from Location l"),
+
 })
 public class Location {
 

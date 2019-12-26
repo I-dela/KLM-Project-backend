@@ -7,6 +7,9 @@ import java.util.List;
 
 @Entity
 @Table(name = "equipment_type")
+@NamedQueries({
+        @NamedQuery(name = "find_all_equipment_types", query = "select et from EquipmentType et")
+})
 public class EquipmentType {
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "equipmentType")

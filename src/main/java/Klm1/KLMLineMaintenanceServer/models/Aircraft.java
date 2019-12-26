@@ -1,12 +1,16 @@
 package Klm1.KLMLineMaintenanceServer.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import jdk.jfr.Name;
 
 import javax.persistence.*;
 import java.util.List;
 
 @Entity
 @Table(name = "aircraft")
+@NamedQueries({
+        @NamedQuery(name = "find_all_aircrafts", query = "select a from Aircraft a")
+})
 public class Aircraft {
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "aircraft")

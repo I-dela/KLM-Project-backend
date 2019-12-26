@@ -8,7 +8,6 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/eType")
 @CrossOrigin(origins = "http://localhost:4200")
 public class EquipmentTypeController {
 
@@ -16,13 +15,13 @@ public class EquipmentTypeController {
     private EquipmentTypeRepository equipmentTypeRepository;
 
 
-    @GetMapping("/getType")
+    @GetMapping("/equipmentType/")
     public List<EquipmentType> getType() {
         System.out.println(equipmentTypeRepository.findAll());
         return (List<EquipmentType>) equipmentTypeRepository.findAll();
     }
 
-    @PostMapping(value = "/postType")
+    @PostMapping(value = "/equipmentType/")
     public String postType(@RequestBody EquipmentType equipmentType) {
 
         equipmentTypeRepository.save(equipmentType);
@@ -30,7 +29,7 @@ public class EquipmentTypeController {
         return "saved succesfully";
     }
 
-    @PutMapping(value = "/updateType")
+    @PutMapping(value = "/equipmentType/")
     public String updateType(@RequestBody EquipmentType equipmentType) {
 
         equipmentTypeRepository.save(equipmentType);
@@ -39,7 +38,7 @@ public class EquipmentTypeController {
 
     }
 
-    @DeleteMapping(value = "/deleteType/{id}")
+    @DeleteMapping(value = "/equipmentType/{id}")
     public String deleteType(@PathVariable int id) {
 
         equipmentTypeRepository.deleteById(id);
