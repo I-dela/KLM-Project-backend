@@ -25,8 +25,8 @@ public class User {
   private String name;
 
   @Column(name = "role")
-  @Enumerated(EnumType.STRING)
-  private Role   role;
+//  @Enumerated(EnumType.STRING)
+  private String role;
 
   @Column(name = "password")
   private String password;
@@ -37,7 +37,7 @@ public class User {
     public User() {
     }
 
-    public User(List<UserRequest> userRequests, String id, String name, Role role, String password, String status) {
+    public User(List<UserRequest> userRequests, String id, String name, String role, String password, String status) {
         this.id = id;
         this.name = name;
         this.role = role;
@@ -59,7 +59,7 @@ public class User {
         return name;
     }
 
-    public Role getRole() {
+    public String getRole() {
         return role;
     }
 
@@ -83,7 +83,7 @@ public class User {
         this.userRequests = userRequests;
     }
 
-    public void setRole(Role role) {
+    public void setRole(String role) {
         this.role = role;
     }
 
@@ -104,7 +104,9 @@ public class User {
         return this.name;
     }
 
-
+    public boolean validateEncodedPassword(String password) {
+        return this.password.equals(password);
+    }
 
 }
 

@@ -2,15 +2,14 @@ package Klm1.KLMLineMaintenanceServer.controllers;
 
 import Klm1.KLMLineMaintenanceServer.models.Equipment;
 import Klm1.KLMLineMaintenanceServer.models.helper.EquipmentComparator;
-import Klm1.KLMLineMaintenanceServer.repositories.EquipmentRepository;
-import org.hibernate.annotations.Parameter;
+import Klm1.KLMLineMaintenanceServer.repositories.EquipmentRepositoryJpa;
+import Klm1.KLMLineMaintenanceServer.repositories.interfaces.EquipmentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/equipment")
@@ -18,7 +17,7 @@ import java.util.Optional;
 public class EquipmentController {
 
   @Autowired
-  private EquipmentRepository equipmentRepository;
+  private EquipmentRepositoryJpa equipmentRepository;
 
   @GetMapping("/")
   public List<Equipment> getEquipments(){
