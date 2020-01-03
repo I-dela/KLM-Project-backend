@@ -29,14 +29,20 @@ public class EquipmentRepository {
         return em.find(Equipment.class, id);
     }
 
+    public Equipment findBySerialNumber(String serialNumber) {
+        return em.find(Equipment.class, serialNumber);
+    }
+
     //  Post
     public Equipment save(Equipment equipment) {
         return em.merge(equipment);
     }
 
     //  Change equipment status
-    public Equipment setEquipmentStatus(String id, Equipment.Status status) {
-        Equipment equipment = em.find(Equipment.class, id);
+    public Equipment setEquipmentStatus(String serialNumber, Equipment.Status status) {
+        Equipment equipment = em.find(Equipment.class, serialNumber);
+        System.out.println("=====================");
+        System.out.println(equipment);
         equipment.setStatus(status);
         return em.merge(equipment);
     }
@@ -54,8 +60,8 @@ public class EquipmentRepository {
         return namedQuery.setParameter("type", type).getResultList();
     }
 
-    public List<Equipment> findRequestsByTypeAndStatus(int type, Equipment.Status status) {
-        EquipmentType equipmentType = em.find(EquipmentType.class, type);
+    public List<Equipment> findRequestsByTypeAndStatus(int typeId, Equipment.Status status) {
+        EquipmentType equipmentType = em.find(EquipmentType.class, typeId);
         TypedQuery<Equipment> namedQuery = em.createNamedQuery("find_equipment_by_type_and_status", Equipment.class);
         return namedQuery.setParameter("type", equipmentType).setParameter("status", status).getResultList();
     }

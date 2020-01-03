@@ -29,10 +29,10 @@ public class UserRequest {
 
 
     @Column(name = "acceptedBy", nullable = true)
-    private int acceptedBy;
+    private String acceptedBy;
 
     @Column(name = "closedBy", nullable = true)
-    private int closedBy;
+    private String closedBy;
 
     public UserRequest() {
     }
@@ -96,19 +96,19 @@ public class UserRequest {
         this.request_id = request_id;
     }
 
-    public int getAcceptedBy() {
+    public String getAcceptedBy() {
         return acceptedBy;
     }
 
-    public void setAcceptedBy(int acceptedBy) {
+    public void setAcceptedBy(String acceptedBy) {
         this.acceptedBy = acceptedBy;
     }
 
-    public int getClosedBy() {
+    public String getClosedBy() {
         return closedBy;
     }
 
-    public void setClosedBy(int closedBy) {
+    public void setClosedBy(String closedBy) {
         this.closedBy = closedBy;
     }
 }

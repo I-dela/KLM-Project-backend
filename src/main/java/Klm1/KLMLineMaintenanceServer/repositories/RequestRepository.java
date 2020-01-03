@@ -12,6 +12,7 @@ import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 import javax.transaction.Transactional;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 @Repository
 @Transactional
@@ -34,7 +35,7 @@ public class RequestRepository {
     }
 
     //  Post
-    public Request save(Request request, int userId) {
+    public Request save(Request request, String userId) {
         User user = em.find(User.class, userId);
         Request request1 = em.merge(request);
         UserRequest userRequest =  new UserRequest(user, request1);
@@ -71,18 +72,19 @@ public class RequestRepository {
         return namedQuery.setParameter("status", status).getResultList();
     }
 
-    public void addRunnerToRequest(Request request, int runnerId) {
+    public void addRunnerToRequest(Request request, String runnerId) {
         // TODO Needs to be declared in UserRequest Repository
         TypedQuery<UserRequest> namedQuery = em.createNamedQuery("find_user_request_by_request_id", UserRequest.class);
 
         UserRequest userRequest = namedQuery.setParameter("request", request).getSingleResult();
+
         userRequest.setAcceptedBy(runnerId);
         em.merge(userRequest);
         request.setStatus(Request.Status.IP);
         em.merge(request);
     }
 
-    public List<Request> findRunnerAcceptedRequests(int runnerId) {
+    public List<Request> findRunnerAcceptedRequests(String runnerId) {
         TypedQuery<Request> namedQuery = em.createNamedQuery("find_all_by_runner_accepted_requests", Request.class);
         return namedQuery.setParameter("runner_id", runnerId).getResultList();
     }

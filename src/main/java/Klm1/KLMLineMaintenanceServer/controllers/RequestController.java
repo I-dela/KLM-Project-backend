@@ -33,10 +33,8 @@ public class RequestController {
     }
 
     @GetMapping("/requests/runner")
-    public List<Request> getRequests(@RequestHeader(name = "RUNID") int runnerId) {
-        System.out.println("==================================");
+    public List<Request> getRequests(@RequestHeader(name = "RUNID") String runnerId) {
         List<Request> requestList = requestRepository.findRunnerAcceptedRequests(runnerId);
-        System.out.println(requestList);
         return requestList;
     }
 
@@ -51,8 +49,9 @@ public class RequestController {
     }
 
     @PostMapping("/requests")
-    public Request postRequest(@RequestBody @Valid Request request, @RequestHeader(name = "GEID") int userId) {
+    public Request postRequest(@RequestBody @Valid Request request, @RequestHeader(name = "GEID") String userId) {
         System.out.println(request);
+        System.out.println(userId);
         return requestRepository.save(request, userId);
     }
 
@@ -85,9 +84,7 @@ public class RequestController {
     }
 
     @PostMapping("/requests/accepted")
-    public void acceptRequest(@RequestBody Request request, @RequestHeader(name = "RUNID") int userId) {
-        System.out.println(userId);
-        System.out.println(request);
+    public void acceptRequest(@RequestBody Request request, @RequestHeader(name = "RUNID") String userId) {
         requestRepository.addRunnerToRequest(request, userId);
     }
 

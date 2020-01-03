@@ -3,6 +3,7 @@ package Klm1.KLMLineMaintenanceServer.controllers;
 import Klm1.KLMLineMaintenanceServer.models.Equipment;
 import Klm1.KLMLineMaintenanceServer.models.helper.EquipmentComparator;
 import Klm1.KLMLineMaintenanceServer.repositories.EquipmentRepository;
+import javassist.NotFoundException;
 import org.hibernate.annotations.Parameter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -66,9 +67,22 @@ public class EquipmentController {
     return equipmentRepository.findRequestsByType(type);
   }
 
-  @GetMapping("/{type}/by")
-  public List<Equipment> getEquipmentByTypeAndStatus(@PathVariable int type, @RequestParam(name = "status") Equipment.Status status) {
-    return equipmentRepository.findRequestsByTypeAndStatus(type, status);
+  @GetMapping("/{typeId}/by")
+  public List<Equipment> getEquipmentByTypeAndStatus(@PathVariable int typeId, @RequestParam(name = "status") Equipment.Status status) {
+    return equipmentRepository.findRequestsByTypeAndStatus(typeId, status);
   }
 
+  @PutMapping("/{serialNumber}/newStatus")
+  public ResponseEntity setEquipmentStatusById(@PathVariable String serialNumber, @RequestBody String status) {
+    try {
+      if (equipmentRepository.findBySerialNumber(serialNumber).getStatus() == Equipment.Status.Inuse) {
+        return ResponseEntity.status(HttpStatus.CONFLICT).body("Equipment is already being used");
+      } else {
+        equipmentRepository.setEquipmentStatus(serialNumber, Equipment.Status.valueOf(status));
+        return ResponseEntity.ok(HttpStatus.OK);
+      }
+    } catch (Exception e) {
+      return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+    }
+  }
 }

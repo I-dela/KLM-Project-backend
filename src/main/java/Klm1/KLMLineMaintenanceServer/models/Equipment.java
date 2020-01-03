@@ -30,25 +30,24 @@ public class Equipment {
     private Status status;
 
     private String statusDescr;
-    private String tracker;
+    private double latitude;
+    private double longitude;
 
     public Equipment() {
     }
 
-    public Equipment(List<Request> requests, String serialNumber, String id, @NotNull EquipmentType type, Status status, String statusDescr, String tracker) {
+    public Equipment(List<Request> requests, String serialNumber, String id, @NotNull EquipmentType type, Status status, String statusDescr) {
         this.requests = requests;
         this.serialNumber = serialNumber;
         this.id = id;
         this.type = type;
         this.status = status;
         this.statusDescr = statusDescr;
-        this.tracker = tracker;
     }
 
     public enum Status {
         Usable, Inuse, Broken
     }
-
 
     public EquipmentType getType() {
         return type;
@@ -75,10 +74,6 @@ public class Equipment {
         return statusDescr;
     }
 
-    public String getTracker() {
-        return tracker;
-    }
-
     public void setSerialNumber(String serialNumber) {
         this.serialNumber = serialNumber;
     }
@@ -96,10 +91,6 @@ public class Equipment {
         this.statusDescr = statusDescription;
     }
 
-    public void setTracker(String tracker) {
-        this.tracker = tracker;
-    }
-
     public List<Request> getRequests() {
         return requests;
     }
@@ -114,6 +105,22 @@ public class Equipment {
 
     public void setStatusDescr(String statusDescr) {
         this.statusDescr = statusDescr;
+    }
+
+    public double getLatitude() {
+        return latitude;
+    }
+
+    public void setLatitude(double latitude) {
+        this.latitude = latitude;
+    }
+
+    public double getLongitude() {
+        return longitude;
+    }
+
+    public void setLongitude(double longitude) {
+        this.longitude = longitude;
     }
 
     @Override
