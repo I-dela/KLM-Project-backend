@@ -1,30 +1,29 @@
 package Klm1.KLMLineMaintenanceServer.controllers;
 
 import Klm1.KLMLineMaintenanceServer.models.User;
-import Klm1.KLMLineMaintenanceServer.repositories.UserRepository;
+import Klm1.KLMLineMaintenanceServer.repositories.UserRepositoryJpa;
+import Klm1.KLMLineMaintenanceServer.repositories.interfaces.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
 @CrossOrigin(origins = "http://localhost:4200")
+@RequestMapping("/users")
 public class UserController {
 
   @Autowired
   private UserRepository userRepository;
 
 
-  @GetMapping("/users")
+  @GetMapping("")
   public List<User> getUsers() {
     System.out.println(userRepository.findAll());
     return (List<User>) userRepository.findAll();
   }
 
-  @GetMapping("/users/{id}")
+  @GetMapping("/{id}")
   public User getUserById(@PathVariable(name = "id") String id){
 
 
@@ -40,7 +39,7 @@ public class UserController {
 
 
 
-    @PostMapping(value = "/users")
+    @PostMapping(value = "")
     public String postUsers(@RequestBody User user) {
         List<User> users = getUsers();
 
@@ -56,13 +55,13 @@ public class UserController {
         return "User saved succesfully";
     }
 
-    @PutMapping(value = "/users")
+    @PutMapping(value = "")
     public String updateUser( @RequestBody User user) {
         userRepository.save(user);
         return "updated successfully";
     }
 
-  @DeleteMapping(value = "/users/{id}")
+  @DeleteMapping(value = "/{id}")
   public String deleteUser(@PathVariable String id){
     User user= userRepository.findById(id);
     userRepository.delete(user);

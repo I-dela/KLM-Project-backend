@@ -11,7 +11,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/equipment")
@@ -19,7 +18,7 @@ import java.util.Optional;
 public class EquipmentController {
 
   @Autowired
-  private EquipmentRepository equipmentRepository;
+  private EquipmentRepositoryJpa equipmentRepository;
 
   @GetMapping("/")
   public List<Equipment> getEquipments(){

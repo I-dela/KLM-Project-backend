@@ -3,6 +3,7 @@ package Klm1.KLMLineMaintenanceServer.repositories;
 import Klm1.KLMLineMaintenanceServer.models.Equipment;
 import Klm1.KLMLineMaintenanceServer.models.EquipmentType;
 import Klm1.KLMLineMaintenanceServer.models.Request;
+import Klm1.KLMLineMaintenanceServer.repositories.interfaces.EquipmentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
@@ -14,17 +15,20 @@ import java.util.List;
 
 @Repository
 @Transactional
-public class EquipmentRepository {
+public class EquipmentRepositoryJpa implements EquipmentRepository {
     @Autowired
     private EntityManager em;
 
     //  Get all
+    @Override
     public List<Equipment> findAll() {
         TypedQuery<Equipment> namedQuery = em.createNamedQuery("find_all_equipment", Equipment.class);
         return namedQuery.getResultList();
     }
 
     //  Get by id
+    @Override
+
     public Equipment findById(String id) {
         return em.find(Equipment.class, id);
     }
@@ -34,6 +38,8 @@ public class EquipmentRepository {
     }
 
     //  Post
+    @Override
+
     public Equipment save(Equipment equipment) {
         return em.merge(equipment);
     }
@@ -50,6 +56,8 @@ public class EquipmentRepository {
 
 
     //  Delete equipment
+    @Override
+
     public void deleteById(String id) {
         Equipment equipment = em.find(Equipment.class, id);
         em.remove(equipment);

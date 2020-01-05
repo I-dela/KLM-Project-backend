@@ -17,7 +17,7 @@ import java.util.List;
 public class RequestController {
 
     @Autowired
-    RequestRepository requestRepository;
+    RequestRepository requestRepositoryJpa;
 
     @Autowired
     EquipmentRepository equipmentRepository;
@@ -54,7 +54,7 @@ public class RequestController {
 
     @GetMapping("/requests/{id}")
     public Request getRequest(@PathVariable String id) {
-        return requestRepository.findById(id);
+        return requestRepositoryJpa.findById(id);
     }
 
     @GetMapping("/requests/departure")
@@ -88,7 +88,7 @@ public class RequestController {
     @PutMapping("/requests/{id}/set-status")
     public void changeRequestStatus(@PathVariable String id, @RequestParam(name = "status") Request.Status status) {
         System.out.println(id);
-        requestRepository.setRequestStatus(id, status);
+        requestRepositoryJpa.setRequestStatus(id, status);
     }
 
     @PutMapping("/requests/changeEquipment")
@@ -105,7 +105,7 @@ public class RequestController {
 
     @GetMapping("/requests/by")
     public List<Request> getRequestsByStatus(@RequestParam(name = "status") Request.Status status) {
-        return requestRepository.findRequestsByStatus(status);
+        return requestRepositoryJpa.findRequestsByStatus(status);
     }
 
     @PostMapping("/requests/accepted")

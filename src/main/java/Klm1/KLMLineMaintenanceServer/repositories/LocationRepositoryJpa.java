@@ -1,6 +1,7 @@
 package Klm1.KLMLineMaintenanceServer.repositories;
 
 import Klm1.KLMLineMaintenanceServer.models.Location;
+import Klm1.KLMLineMaintenanceServer.repositories.interfaces.LocationRepository;
 import org.hibernate.validator.constraints.EAN;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.repository.CrudRepository;
@@ -13,7 +14,7 @@ import java.util.List;
 
 @Repository
 @Transactional
-public class LocationRepository {
+public class LocationRepositoryJpa implements LocationRepository {
 
 
     @Autowired

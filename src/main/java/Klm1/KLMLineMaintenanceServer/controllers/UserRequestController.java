@@ -1,7 +1,8 @@
 package Klm1.KLMLineMaintenanceServer.controllers;
 
 import Klm1.KLMLineMaintenanceServer.models.UserRequest;
-import Klm1.KLMLineMaintenanceServer.repositories.UserRequestRepository;
+import Klm1.KLMLineMaintenanceServer.repositories.UserRequestRepositoryJpa;
+import Klm1.KLMLineMaintenanceServer.repositories.interfaces.UserRequestRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -13,11 +14,11 @@ public class UserRequestController {
 
 
     @Autowired
-    private UserRequestRepository userRequestRepository;
+    private UserRequestRepository userRequestRepositoryJpa;
 
     @GetMapping("/userRequests")
     public List<UserRequest> getUserRequests() {
-        return (List<UserRequest>) userRequestRepository.findAll();
+        return (List<UserRequest>) userRequestRepositoryJpa.findAll();
 
     }
 
