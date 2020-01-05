@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
+import javax.persistence.NamedQuery;
 import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 import javax.transaction.Transactional;
@@ -39,9 +40,36 @@ public class RequestRepository {
         User user = em.find(User.class, userId);
         Request request1 = em.merge(request);
         UserRequest userRequest =  new UserRequest(user, request1);
-
         em.merge(userRequest);
         return request1;
+    }
+
+    public Request saveSelfPickup(Request request, String userId) {
+        User user = em.find(User.class, userId);
+        //  Sets the requests status to in progress
+        request.setStatus(Request.Status.IP);
+        Request request1 = em.merge(request);
+        //  Adds the user to the accepted by
+        UserRequest userRequest =  new UserRequest(user, request1);
+        userRequest.setAcceptedBy(userId);
+        em.merge(userRequest);
+        //  Sets the equipment to in use
+        Equipment usedEquipment = em.find(Equipment.class, request.getEquipment().getSerialNumber());
+        usedEquipment.setStatus(Equipment.Status.Inuse);
+        em.merge(usedEquipment);
+        return request1;
+    }
+
+    public List<Request> findSelfPickupList(String userId) {
+        Query namedQuery = em.createNamedQuery("find_all_requests_created_and_accepted_by", Request.class);
+        User user = em.find(User.class, userId);
+
+        namedQuery.setParameter("user", user);
+        namedQuery.setParameter("userId", userId);
+        List<Request> requestList = namedQuery.getResultList();
+        System.out.println(requestList);
+
+        return requestList;
     }
 
     //  Change request status
@@ -73,15 +101,29 @@ public class RequestRepository {
     }
 
     public void addRunnerToRequest(Request request, String runnerId) {
-        // TODO Needs to be declared in UserRequest Repository
         TypedQuery<UserRequest> namedQuery = em.createNamedQuery("find_user_request_by_request_id", UserRequest.class);
 
         UserRequest userRequest = namedQuery.setParameter("request", request).getSingleResult();
+        Equipment usedEquipment = em.find(Equipment.class, request.getEquipment().getSerialNumber());
 
+        System.out.println(usedEquipment);
+        usedEquipment.setStatus(Equipment.Status.Inuse);
+        System.out.println(usedEquipment);
+
+        em.merge(usedEquipment);
         userRequest.setAcceptedBy(runnerId);
         em.merge(userRequest);
         request.setStatus(Request.Status.IP);
         em.merge(request);
+    }
+
+    public List<Request> findByEngineerCreatedRequests(String engineerId) {
+        User engineer = em.find(User.class, engineerId);
+
+        System.out.println(engineer);
+
+        TypedQuery<Request> namedQuery = em.createNamedQuery("find_all_by_engineer_created_requests", Request.class);
+        return namedQuery.setParameter("engineer", engineer).getResultList();
     }
 
     public List<Request> findRunnerAcceptedRequests(String runnerId) {
@@ -95,5 +137,15 @@ public class RequestRepository {
         return query.getResultList();
     }
 
+    public void closeRequestDelivery(String requestId) {
+        Request request = em.find(Request.class, requestId);
+        Equipment usedEquipment = em.find(Equipment.class, request.getEquipment().getSerialNumber());
 
+        if (usedEquipment.getStatus() != Equipment.Status.Broken) {
+            usedEquipment.setStatus(Equipment.Status.Usable);
+            em.merge(usedEquipment);
+        }
+        request.setStatus(Request.Status.CL);
+        em.merge(request);
+    }
 }

@@ -125,7 +125,15 @@ public class Equipment {
 
     @Override
     public String toString() {
-        return this.id;
+        return "Equipment{" +
+                ", serialNumber='" + serialNumber + '\'' +
+                ", id='" + id + '\'' +
+                ", type=" + type +
+                ", status=" + status +
+                ", statusDescr='" + statusDescr + '\'' +
+                ", latitude=" + latitude +
+                ", longitude=" + longitude +
+                '}';
     }
 }
 

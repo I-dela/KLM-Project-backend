@@ -2,19 +2,15 @@ package Klm1.KLMLineMaintenanceServer.controllers;
 
 import Klm1.KLMLineMaintenanceServer.models.Equipment;
 import Klm1.KLMLineMaintenanceServer.models.Request;
-import Klm1.KLMLineMaintenanceServer.models.User;
 import Klm1.KLMLineMaintenanceServer.repositories.EquipmentRepository;
 import Klm1.KLMLineMaintenanceServer.repositories.RequestRepository;
-import org.hibernate.annotations.Parameter;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @CrossOrigin(origins = "http://localhost:4200")
@@ -33,9 +29,27 @@ public class RequestController {
     }
 
     @GetMapping("/requests/runner")
-    public List<Request> getRequests(@RequestHeader(name = "RUNID") String runnerId) {
-        List<Request> requestList = requestRepository.findRunnerAcceptedRequests(runnerId);
+    public List<Request> getRequests(@RequestHeader(name = "RUNID") String userId) {
+        List<Request> requestList = requestRepository.findRunnerAcceptedRequests(userId);
         return requestList;
+    }
+
+    @GetMapping("/requests/user-created")
+    public List<Request> getRequestsByEngineer(@RequestHeader(name = "GEID") String userId) {
+        List<Request> requestList = requestRepository.findByEngineerCreatedRequests(userId);
+        return requestList;
+    }
+
+    @GetMapping("/requests/user-created/by")
+    public List<Request> getRequestsByEngineer(@RequestHeader(name = "GEID") String userId, @RequestParam(name = "status") Request.Status status) {
+        List<Request> requestList = requestRepository.findByEngineerCreatedRequests(userId);
+        List<Request> filteredRequestList = new ArrayList<>();
+        requestList.forEach(request -> {
+            if (request.getStatus() == status) {
+                filteredRequestList.add(request);
+            }
+        });
+        return filteredRequestList;
     }
 
     @GetMapping("/requests/{id}")
@@ -55,6 +69,18 @@ public class RequestController {
         return requestRepository.save(request, userId);
     }
 
+    @PostMapping("/requests/self")
+    public Request postSelfPickupRequest(@RequestBody @Valid Request request, @RequestHeader(name = "GEID") String userId) {
+        System.out.println(request);
+        System.out.println(userId);
+        return requestRepository.saveSelfPickup(request, userId);
+    }
+
+    @GetMapping("/requests/self")
+    public List<Request> getSelfPickupRequest(@RequestHeader(name = "GEID") String userId) {
+        System.out.println(userId);
+        return requestRepository.findSelfPickupList(userId);
+    }
 
     @PutMapping("/requests/{id}/set-status")
     public void changeRequestStatus(@PathVariable String id, @RequestParam(name = "status") Request.Status status) {
@@ -71,11 +97,7 @@ public class RequestController {
 
         requestRepository.setRequestEquipment(request1, equipment);
 
-
-
         return ResponseEntity.ok().build();
-
-
     }
 
     @GetMapping("/requests/by")
@@ -88,6 +110,8 @@ public class RequestController {
         requestRepository.addRunnerToRequest(request, userId);
     }
 
-
-
+    @PutMapping("/requests/confirm-delivery")
+    public void closeRequestDelivery(@RequestBody String requestId) {
+        requestRepository.closeRequestDelivery(requestId);
+    }
 }

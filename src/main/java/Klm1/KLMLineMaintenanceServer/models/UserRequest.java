@@ -11,7 +11,9 @@ import java.util.Objects;
 @NamedQueries({
         @NamedQuery(name = "find_user_request_by_request_id", query = "SELECT r FROM UserRequest r WHERE r.request_id = :request"),
         @NamedQuery(name = "find_all_by_runner_accepted_requests", query = "SELECT r.request_id FROM UserRequest r WHERE r.acceptedBy = :runner_id"),
-        @NamedQuery(name = "find_all_user_requests", query = "select ur from UserRequest ur ")
+        @NamedQuery(name = "find_all_by_engineer_created_requests", query = "SELECT r.request_id FROM UserRequest r WHERE r.user_id = :engineer"),
+        @NamedQuery(name = "find_all_user_requests", query = "select ur from UserRequest ur "),
+        @NamedQuery(name = "find_all_requests_created_and_accepted_by", query = "select ur.request_id from UserRequest ur WHERE ur.user_id = :user AND ur.acceptedBy = :userId")
 })
 public class UserRequest {
 
