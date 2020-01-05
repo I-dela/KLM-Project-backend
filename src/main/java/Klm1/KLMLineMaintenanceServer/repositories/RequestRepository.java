@@ -8,12 +8,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
-import javax.persistence.NamedQuery;
 import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 import javax.transaction.Transactional;
 import java.util.List;
-import java.util.NoSuchElementException;
 
 @Repository
 @Transactional
@@ -23,6 +21,9 @@ public class RequestRepository {
 
     @Autowired
     private EntityManager em ;
+
+    @Autowired
+    private UserRequestRepository userRequestRepository;
 
     //  Get all
     public List<Request> findAll() {
@@ -58,6 +59,22 @@ public class RequestRepository {
         usedEquipment.setStatus(Equipment.Status.Inuse);
         em.merge(usedEquipment);
         return request1;
+    }
+
+    public Request closeSelfPickUp(String requestId, String userId) {
+        Request request = em.find(Request.class, requestId);
+        UserRequest userRequest = userRequestRepository.findByRequest(request);
+        Equipment equipment = em.find(Equipment.class, request.getEquipment().getSerialNumber());
+
+        userRequest.setClosedBy(userId);
+        request.setStatus(Request.Status.CL);
+
+        if (equipment.getStatus() != Equipment.Status.Broken) {
+            equipment.setStatus(Equipment.Status.Usable);
+            em.merge(equipment);
+        }
+        em.merge(userRequest);
+        return em.merge(request);
     }
 
     public List<Request> findSelfPickupList(String userId) {
@@ -106,12 +123,17 @@ public class RequestRepository {
         UserRequest userRequest = namedQuery.setParameter("request", request).getSingleResult();
         Equipment usedEquipment = em.find(Equipment.class, request.getEquipment().getSerialNumber());
 
-        System.out.println(usedEquipment);
-        usedEquipment.setStatus(Equipment.Status.Inuse);
-        System.out.println(usedEquipment);
+        if (userRequest.getAcceptedBy() == null) {
+            System.out.println(usedEquipment);
+            usedEquipment.setStatus(Equipment.Status.Inuse);
+            System.out.println(usedEquipment);
+            em.merge(usedEquipment);
 
-        em.merge(usedEquipment);
-        userRequest.setAcceptedBy(runnerId);
+            userRequest.setAcceptedBy(runnerId);
+        } else {
+            userRequest.setClosedBy(runnerId);
+        }
+
         em.merge(userRequest);
         request.setStatus(Request.Status.IP);
         em.merge(request);
@@ -140,12 +162,41 @@ public class RequestRepository {
     public void closeRequestDelivery(String requestId) {
         Request request = em.find(Request.class, requestId);
         Equipment usedEquipment = em.find(Equipment.class, request.getEquipment().getSerialNumber());
+        UserRequest userRequest = userRequestRepository.findByRequest(request);
 
-        if (usedEquipment.getStatus() != Equipment.Status.Broken) {
-            usedEquipment.setStatus(Equipment.Status.Usable);
-            em.merge(usedEquipment);
+        if (userRequest.getClosedBy() != null) {
+            if (usedEquipment.getStatus() != Equipment.Status.Broken) {
+                usedEquipment.setStatus(Equipment.Status.Usable);
+                em.merge(usedEquipment);
+            }
         }
+
         request.setStatus(Request.Status.CL);
         em.merge(request);
+    }
+
+    public void cancelRequestRun(String requestId) {
+        Request request = em.find(Request.class, requestId);
+        UserRequest userRequest = userRequestRepository.findByRequest(request);
+        Equipment equipment = em.find(Equipment.class, request.getEquipment().getSerialNumber());
+
+        if (userRequest.getClosedBy() == null) {
+            userRequest.setAcceptedBy(null);
+            request.setEquipment(null);
+            if (equipment.getStatus() != Equipment.Status.Broken) {
+                equipment.setStatus(Equipment.Status.Usable);
+            }
+        } else {
+            userRequest.setClosedBy(null);
+        }
+        request.setStatus(Request.Status.OP);
+        em.merge(userRequest);
+        em.merge(request);
+        em.merge(equipment);
+    }
+
+    public void requestPickUp(String requestId) {
+        Request request = em.find(Request.class, requestId);
+        request.setStatus(Request.Status.OP);
     }
 }

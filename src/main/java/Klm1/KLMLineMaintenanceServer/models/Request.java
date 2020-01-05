@@ -7,6 +7,7 @@ import org.hibernate.annotations.GenericGenerator;
 import javax.annotation.processing.Generated;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.io.Serializable;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.Date;
@@ -21,8 +22,7 @@ import java.util.List;
         @NamedQuery(name = "change_equipment", query = "update Request r set r.equipment=?1 where r.id=?2")
 
 })
-
-public class Request {
+public class Request implements Serializable {
 
     @Column(name = "id")
     @Id
@@ -66,16 +66,19 @@ public class Request {
     @Column(name = "departure")
     private Date departure;
 
+    private String amountOfTires;
+
     public Request() {
     }
 
-    public Request(@NotNull Status status, @NotNull EquipmentType equipmentType, @NotNull Aircraft aircraft, @NotNull Location location, Equipment equipment, Date departure) {
+    public Request(@NotNull Status status, @NotNull EquipmentType equipmentType, @NotNull Aircraft aircraft, @NotNull Location location, Equipment equipment, Date departure, String amountOfTires) {
         this.status = status;
         this.equipmentType = equipmentType;
         this.aircraft = aircraft;
         this.location = location;
         this.equipment = equipment;
         this.departure = departure;
+        this.amountOfTires = amountOfTires;
     }
 
     public enum Status {
@@ -146,10 +149,17 @@ public class Request {
         this.departure = departure;
     }
 
+    public String getAmountOfTires() {
+        return amountOfTires;
+    }
+
+    public void setAmountOfTires(String amountOfTires) {
+        this.amountOfTires = amountOfTires;
+    }
+
     @Override
     public String toString() {
         return "Request{" +
-//            "userRequests=" + userRequests +
                 " id='" + id + '\'' +
                 ", status=" + status +
                 ", equipmentType=" + equipmentType +
@@ -158,6 +168,7 @@ public class Request {
                 ", equipment=" + equipment +
                 ", timeStamp=" + timeStamp +
                 ", departure=" + departure +
+                ", amountOfTires=" + amountOfTires +
                 '}';
     }
 }

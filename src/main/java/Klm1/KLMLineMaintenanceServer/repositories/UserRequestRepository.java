@@ -1,5 +1,6 @@
 package Klm1.KLMLineMaintenanceServer.repositories;
 
+import Klm1.KLMLineMaintenanceServer.models.Request;
 import Klm1.KLMLineMaintenanceServer.models.UserRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.repository.CrudRepository;
@@ -21,5 +22,15 @@ public class UserRequestRepository  {
         TypedQuery<UserRequest> query= em.createQuery("select ur from UserRequest ur", UserRequest.class);
 
         return query.getResultList();
+    }
+
+    public UserRequest findById(String id) {
+        return em.find(UserRequest.class, id);
+    }
+
+    public UserRequest findByRequest(Request request) {
+        TypedQuery<UserRequest> query= em.createNamedQuery("find_user_request_by_request_id", UserRequest.class);
+        query.setParameter("request", request);
+        return query.getSingleResult();
     }
 }

@@ -4,14 +4,16 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.io.Serializable;
 import java.util.List;
+import java.util.Random;
 
 @Entity
 @Table(name = "equipment")
 @NamedQuery(name = "find_all_equipment", query = "SELECT e FROM Equipment e")
 @NamedQuery(name = "find_equipment_by_status", query = "SELECT e FROM Equipment e WHERE e.status = :status")
 @NamedQuery(name = "find_equipment_by_type_and_status", query = "SELECT e FROM Equipment e WHERE e.type = :type AND e.status = :status")
-public class Equipment {
+public class Equipment implements Serializable {
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "equipment")
     @JsonIgnore
@@ -108,7 +110,8 @@ public class Equipment {
     }
 
     public double getLatitude() {
-        return latitude;
+        double generatedLatitude = 52.303000 + new Random().nextDouble() * (52.315000 - 52.303000);
+        return generatedLatitude;
     }
 
     public void setLatitude(double latitude) {
@@ -116,7 +119,8 @@ public class Equipment {
     }
 
     public double getLongitude() {
-        return longitude;
+        double generatedLongitude = 4.754000 + new Random().nextDouble() * (4.775000 - 4.754000);
+        return generatedLongitude;
     }
 
     public void setLongitude(double longitude) {

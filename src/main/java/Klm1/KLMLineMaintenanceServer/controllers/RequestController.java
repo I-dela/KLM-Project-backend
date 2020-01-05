@@ -71,9 +71,12 @@ public class RequestController {
 
     @PostMapping("/requests/self")
     public Request postSelfPickupRequest(@RequestBody @Valid Request request, @RequestHeader(name = "GEID") String userId) {
-        System.out.println(request);
-        System.out.println(userId);
         return requestRepository.saveSelfPickup(request, userId);
+    }
+
+    @PutMapping("/requests/self-close")
+    public Request closeSelfPickupRequest(@RequestBody @Valid String requestId, @RequestHeader(name = "GEID") String userId) {
+        return requestRepository.closeSelfPickUp(requestId, userId);
     }
 
     @GetMapping("/requests/self")
@@ -113,5 +116,20 @@ public class RequestController {
     @PutMapping("/requests/confirm-delivery")
     public void closeRequestDelivery(@RequestBody String requestId) {
         requestRepository.closeRequestDelivery(requestId);
+    }
+
+    @PutMapping("/requests/cancel")
+    public void cancelRequest(@RequestBody String requestId) {
+        requestRepository.setRequestStatus(requestId, Request.Status.CAN);
+    }
+
+    @PutMapping("/requests/cancel-run")
+    public void cancelRun(@RequestBody String requestId) {
+        requestRepository.cancelRequestRun(requestId);
+    }
+
+    @PutMapping("/requests/pick-up")
+    public void requestPickUp(@RequestBody String requestId) {
+        requestRepository.requestPickUp(requestId);
     }
 }
