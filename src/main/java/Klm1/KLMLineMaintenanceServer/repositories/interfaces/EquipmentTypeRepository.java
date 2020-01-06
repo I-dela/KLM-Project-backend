@@ -10,7 +10,7 @@ public interface EquipmentTypeRepository {
 
     void save(EquipmentType equipmentType);
 
-    EquipmentType deleteById(int id);
+    void deleteById(int id);
 
     EquipmentType findById(int id);
 }

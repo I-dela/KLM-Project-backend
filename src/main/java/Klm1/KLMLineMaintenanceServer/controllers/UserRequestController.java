@@ -12,14 +12,12 @@ import java.util.List;
 @CrossOrigin(origins = "http://localhost:4200")
 public class UserRequestController {
 
-
     @Autowired
     private UserRequestRepository userRequestRepositoryJpa;
 
     @GetMapping("/userRequests")
     public List<UserRequest> getUserRequests() {
         return (List<UserRequest>) userRequestRepositoryJpa.findAll();
-
     }
 
 }

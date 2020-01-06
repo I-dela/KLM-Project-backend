@@ -11,13 +11,13 @@ public interface RequestRepository {
 
     Request findById(String id);
 
-    Request save(Request request, int userId);
+    Request save(Request request, String userId);
 
     Request setRequestStatus(String id, Request.Status status);
 
     List<Request> findRequestsByStatus(Request.Status status);
 
-    void addRunnerToRequest(Request request, int runnerId);
+    void addRunnerToRequest(Request request, String runnerId);
 
-    List<Request> findRunnerAcceptedRequests(int runnerId);
+    List<Request> findRunnerAcceptedRequests(String runnerId);
 }

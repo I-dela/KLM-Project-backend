@@ -4,6 +4,7 @@ import Klm1.KLMLineMaintenanceServer.models.Equipment;
 import Klm1.KLMLineMaintenanceServer.models.Request;
 import Klm1.KLMLineMaintenanceServer.models.User;
 import Klm1.KLMLineMaintenanceServer.models.UserRequest;
+import Klm1.KLMLineMaintenanceServer.repositories.interfaces.UserRequestRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -17,13 +18,11 @@ import java.util.List;
 @Transactional
 public class RequestRepository {
 
-
-
     @Autowired
     private EntityManager em ;
 
     @Autowired
-    private UserRequestRepository userRequestRepository;
+    private UserRequestRepositoryJpa userRequestRepositoryJpa;
 
     //  Get all
     public List<Request> findAll() {
@@ -63,7 +62,7 @@ public class RequestRepository {
 
     public Request closeSelfPickUp(String requestId, String userId) {
         Request request = em.find(Request.class, requestId);
-        UserRequest userRequest = userRequestRepository.findByRequest(request);
+        UserRequest userRequest = userRequestRepositoryJpa.findByRequest(request);
         Equipment equipment = em.find(Equipment.class, request.getEquipment().getSerialNumber());
 
         userRequest.setClosedBy(userId);
@@ -162,7 +161,7 @@ public class RequestRepository {
     public void closeRequestDelivery(String requestId) {
         Request request = em.find(Request.class, requestId);
         Equipment usedEquipment = em.find(Equipment.class, request.getEquipment().getSerialNumber());
-        UserRequest userRequest = userRequestRepository.findByRequest(request);
+        UserRequest userRequest = userRequestRepositoryJpa.findByRequest(request);
 
         if (userRequest.getClosedBy() != null) {
             if (usedEquipment.getStatus() != Equipment.Status.Broken) {
@@ -177,7 +176,7 @@ public class RequestRepository {
 
     public void cancelRequestRun(String requestId) {
         Request request = em.find(Request.class, requestId);
-        UserRequest userRequest = userRequestRepository.findByRequest(request);
+        UserRequest userRequest = userRequestRepositoryJpa.findByRequest(request);
         Equipment equipment = em.find(Equipment.class, request.getEquipment().getSerialNumber());
 
         if (userRequest.getClosedBy() == null) {

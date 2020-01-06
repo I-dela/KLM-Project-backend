@@ -23,11 +23,10 @@ public class UserRepositoryJpa implements UserRepository{
     @Override
     public List<User> findAll(){
         TypedQuery<User> query= em.createQuery("select u from User u", User.class);
-
         return query.getResultList();
     }
-    @Override
 
+    @Override
     public void delete(User user){
         User toRemove = em.merge(user);
         em.remove(toRemove);

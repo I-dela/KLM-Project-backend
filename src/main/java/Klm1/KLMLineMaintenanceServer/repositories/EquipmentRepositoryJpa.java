@@ -28,7 +28,6 @@ public class EquipmentRepositoryJpa implements EquipmentRepository {
 
     //  Get by id
     @Override
-
     public Equipment findById(String id) {
         return em.find(Equipment.class, id);
     }
@@ -39,7 +38,6 @@ public class EquipmentRepositoryJpa implements EquipmentRepository {
 
     //  Post
     @Override
-
     public Equipment save(Equipment equipment) {
         return em.merge(equipment);
     }
@@ -53,11 +51,8 @@ public class EquipmentRepositoryJpa implements EquipmentRepository {
         return em.merge(equipment);
     }
 
-
-
     //  Delete equipment
     @Override
-
     public void deleteById(String id) {
         Equipment equipment = em.find(Equipment.class, id);
         em.remove(equipment);

@@ -16,7 +16,6 @@ public class UserController {
   @Autowired
   private UserRepository userRepository;
 
-
   @GetMapping("")
   public List<User> getUsers() {
     System.out.println(userRepository.findAll());
@@ -25,19 +24,12 @@ public class UserController {
 
   @GetMapping("/{id}")
   public User getUserById(@PathVariable(name = "id") String id){
-
-
     User user= userRepository.findById(id);
-
     if(user== null){
       throw new RuntimeException("User with id:" + id + "not found");
     }
-
     return user;
-
   }
-
-
 
     @PostMapping(value = "")
     public String postUsers(@RequestBody User user) {

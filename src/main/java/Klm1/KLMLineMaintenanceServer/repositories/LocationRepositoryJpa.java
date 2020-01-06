@@ -36,7 +36,6 @@ public class LocationRepositoryJpa implements LocationRepository {
 
     public void delete(Location location){
         Location toRemove= entityManager.merge(location);
-
         entityManager.remove(toRemove);
     }
 }

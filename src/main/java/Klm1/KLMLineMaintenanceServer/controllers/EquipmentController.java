@@ -2,7 +2,7 @@ package Klm1.KLMLineMaintenanceServer.controllers;
 
 import Klm1.KLMLineMaintenanceServer.models.Equipment;
 import Klm1.KLMLineMaintenanceServer.models.helper.EquipmentComparator;
-import Klm1.KLMLineMaintenanceServer.repositories.EquipmentRepository;
+import Klm1.KLMLineMaintenanceServer.repositories.EquipmentRepositoryJpa;
 import javassist.NotFoundException;
 import org.hibernate.annotations.Parameter;
 import org.springframework.beans.factory.annotation.Autowired;
