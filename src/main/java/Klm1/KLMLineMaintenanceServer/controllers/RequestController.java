@@ -2,8 +2,11 @@ package Klm1.KLMLineMaintenanceServer.controllers;
 
 import Klm1.KLMLineMaintenanceServer.models.Equipment;
 import Klm1.KLMLineMaintenanceServer.models.Request;
+import Klm1.KLMLineMaintenanceServer.models.helper.AppconfigJ;
 import Klm1.KLMLineMaintenanceServer.repositories.EquipmentRepositoryJpa;
 import Klm1.KLMLineMaintenanceServer.repositories.RequestRepository;
+import Klm1.KLMLineMaintenanceServer.repositories.security.JWToken;
+import Klm1.KLMLineMaintenanceServer.repositories.security.JWTokenInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -24,6 +27,15 @@ public class RequestController {
     @Autowired
     EquipmentRepositoryJpa equipmentRepositoryJpa;
 
+    @Autowired
+    AppconfigJ appconfigJ;
+
+    private String getUserIdFromToken(String token) {
+        String s = token.replace("Bearer ", "");
+        JWTokenInfo jwTokenInfo = JWToken.decode(s, appconfigJ.passphrase);
+        return jwTokenInfo.getUserId();
+    }
+
     @GetMapping("/requests")
     public List<Request> getRequests() {
 
@@ -31,20 +43,20 @@ public class RequestController {
     }
 
     @GetMapping("/requests/runner")
-    public List<Request> getRequests(@RequestHeader(name = "userId") String userId) {
-        List<Request> requestList = requestRepositoryJpa.findRunnerAcceptedRequests(userId);
+    public List<Request> getRequests(@RequestHeader(name = "Authorization") String token) {
+        List<Request> requestList = requestRepositoryJpa.findRunnerAcceptedRequests(getUserIdFromToken(token));
         return requestList;
     }
 
     @GetMapping("/requests/user-created")
-    public List<Request> getRequestsByEngineer(@RequestHeader(name = "userId") String userId) {
-        List<Request> requestList = requestRepositoryJpa.findByEngineerCreatedRequests(userId);
+    public List<Request> getRequestsByEngineer(@RequestHeader(name = "Authorization") String token) {
+        List<Request> requestList = requestRepositoryJpa.findByEngineerCreatedRequests(getUserIdFromToken(token));
         return requestList;
     }
 
     @GetMapping("/requests/user-created/by")
-    public List<Request> getRequestsByEngineer(@RequestHeader(name = "userId") String userId, @RequestParam(name = "status") Request.Status status) {
-        List<Request> requestList = requestRepositoryJpa.findByEngineerCreatedRequests(userId);
+    public List<Request> getRequestsByEngineer(@RequestHeader(name = "Authorization") String token, @RequestParam(name = "status") Request.Status status) {
+        List<Request> requestList = requestRepositoryJpa.findByEngineerCreatedRequests(getUserIdFromToken(token));
         List<Request> filteredRequestList = new ArrayList<>();
         requestList.forEach(request -> {
             if (request.getStatus() == status) {
@@ -65,24 +77,23 @@ public class RequestController {
     }
 
     @PostMapping("/requests")
-    public Request postRequest(@RequestBody @Valid Request request, @RequestHeader(name = "userId") String userId) {
-        System.out.println(userId);
-        return requestRepositoryJpa.save(request, userId);
+    public Request postRequest(@RequestBody @Valid Request request, @RequestHeader(name = "Authorization") String token) {
+        return requestRepositoryJpa.save(request, getUserIdFromToken(token));
     }
 
     @PostMapping("/requests/self")
-    public Request postSelfPickupRequest(@RequestBody @Valid Request request, @RequestHeader(name = "userId") String userId) {
-        return requestRepositoryJpa.saveSelfPickup(request, userId);
+    public Request postSelfPickupRequest(@RequestBody @Valid Request request, @RequestHeader(name = "Authorization") String token) {
+        return requestRepositoryJpa.saveSelfPickup(request, getUserIdFromToken(token));
     }
 
     @PutMapping("/requests/self-close")
-    public Request closeSelfPickupRequest(@RequestBody @Valid String requestId, @RequestHeader(name = "userId") String userId) {
-        return requestRepositoryJpa.closeSelfPickUp(requestId, userId);
+    public Request closeSelfPickupRequest(@RequestBody @Valid String requestId, @RequestHeader(name = "Authorization") String token) {
+        return requestRepositoryJpa.closeSelfPickUp(requestId, getUserIdFromToken(token));
     }
 
     @GetMapping("/requests/self")
-    public List<Request> getSelfPickupRequest(@RequestHeader(name = "userId") String userId) {
-        return requestRepositoryJpa.findSelfPickupList(userId);
+    public List<Request> getSelfPickupRequest(@RequestHeader(name = "Authorization") String token) {
+        return requestRepositoryJpa.findSelfPickupList(getUserIdFromToken(token));
     }
 
     @PutMapping("/requests/{id}/set-status")
@@ -104,8 +115,8 @@ public class RequestController {
     }
 
     @PostMapping("/requests/accepted")
-    public void acceptRequest(@RequestBody Request request, @RequestHeader(name = "userId") String userId) {
-        requestRepositoryJpa.addRunnerToRequest(request, userId);
+    public void acceptRequest(@RequestBody Request request, @RequestHeader(name = "Authorization") String token) {
+        requestRepositoryJpa.addRunnerToRequest(request, getUserIdFromToken(token));
     }
 
     @PutMapping("/requests/confirm-delivery")
