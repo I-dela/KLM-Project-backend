@@ -1,13 +1,11 @@
 package Klm1.KLMLineMaintenanceServer.repositories.security;
 
-import Klm1.KLMLineMaintenanceServer.models.User;
-
 public class JWTokenInfo {
   public static final String KEY = "tokenInfo";
 
-  private String id;
+  private String userId;
+  private String name;
   private String role;
-
 
   public String getRole() {
     return role;
@@ -17,18 +15,19 @@ public class JWTokenInfo {
     this.role = role;
   }
 
-
-
-  public String getId() {
-    return id;
+  public String getUserId() {
+    return userId;
   }
 
-  public void setId(String id) {
-    this.id = id;
+  public void setUserId(String userId) {
+    this.userId = userId;
   }
 
+  public String getName() {
+    return name;
+  }
 
-
-
-
+  public void setName(String name) {
+    this.name = name;
+  }
 }
