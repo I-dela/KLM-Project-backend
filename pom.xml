@@ -101,7 +101,12 @@
 				</exclusion>
 			</exclusions>
 		</dependency>
-		<!-- end JWT jackson -->
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <!-- end JWT jackson -->
 
 
 	</dependencies>
