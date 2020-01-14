@@ -1,31 +1,26 @@
 package Klm1.KLMLineMaintenanceServer;
 
 import Klm1.KLMLineMaintenanceServer.controllers.UserController;
-import Klm1.KLMLineMaintenanceServer.models.*;
+import Klm1.KLMLineMaintenanceServer.models.Aircraft;
+import Klm1.KLMLineMaintenanceServer.models.Location;
+import Klm1.KLMLineMaintenanceServer.models.Request;
+import Klm1.KLMLineMaintenanceServer.models.User;
 import Klm1.KLMLineMaintenanceServer.repositories.*;
 import Klm1.KLMLineMaintenanceServer.repositories.interfaces.UserRepository;
 import Klm1.KLMLineMaintenanceServer.repositories.interfaces.UserRequestRepository;
-import org.junit.Assert;
 import org.junit.jupiter.api.Test;
-import org.junit.runner.RunWith;
 import org.mockito.Mock;
-import org.mockito.Mockito;
-import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.is;
-import static org.hamcrest.Matchers.sameInstance;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 
 //is used to provide a bridge between Spring Boot test features and JUnit.Whenever we are using any Spring Boot testing features in our JUnit tests, this annotation will be required.
-@RunWith(SpringRunner.class)
 // specify the main applcication class(optional)
 @SpringBootTest(classes = KlmLineMaintenanceServerApplication.class, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 class YassineTest {
@@ -80,15 +75,15 @@ class YassineTest {
         String message1Add = this.userController.postUsers(user1);
 
         // check if the user is saved successfully
-        Assert.assertEquals("User saved succesfully", messageAdd);
-        Assert.assertEquals("User saved succesfully", message1Add);
+        assertEquals("User saved succesfully", messageAdd);
+        assertEquals("User saved succesfully", message1Add);
 
         assertEquals(users.size(), 2);
 
         System.out.println("-------------" + user.getId());
         users.remove(user);
         String messageDelete = this.userController.deleteUser(user.getId());
-        Assert.assertEquals("Delete is successfull", messageDelete);
+        assertEquals("Delete is successfull", messageDelete);
         assertEquals(users.size(), 1);
 
 
@@ -106,7 +101,7 @@ class YassineTest {
         Aircraft savedAircarft = this.aircraftRepositoryJpa.save(aircraft);
         //check if save is successful by checking attributes
         System.out.println(aircraft.getManufacturer());
-        Assert.assertEquals("Klm1", savedAircarft.getManufacturer());
+        assertEquals("Klm1", savedAircarft.getManufacturer());
     }
     @Test
     public void testRepo_deleteUser() {
@@ -126,7 +121,7 @@ class YassineTest {
         aircraftRepositoryJpa.delete(savedAircarft);
 
         Aircraft DeletedAircarft =  aircraftRepositoryJpa.findById(savedAircarft.getId());
-        Assert.assertNull(DeletedAircarft);
+        assertNull(DeletedAircarft);
 
 
     }
@@ -154,7 +149,6 @@ class YassineTest {
     }
 }
 
-@RunWith(MockitoJUnitRunner.class)
 @SpringBootTest(classes = KlmLineMaintenanceServerApplication.class, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 class TestMockYassine{
 
