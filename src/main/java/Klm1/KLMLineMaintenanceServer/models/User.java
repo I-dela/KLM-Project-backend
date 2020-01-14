@@ -37,6 +37,14 @@ public class User {
     public User() {
     }
 
+    public User(String id, String name, String role, String password) {
+        this.id = id;
+        this.name = name;
+        this.role = role;
+        this.password = password;
+        this.status = "OFF";
+    }
+
     public User(List<UserRequest> userRequests, String id, String name, String role, String password, String status) {
         this.id = id;
         this.name = name;
