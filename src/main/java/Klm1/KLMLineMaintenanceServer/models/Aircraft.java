@@ -1,7 +1,6 @@
 package Klm1.KLMLineMaintenanceServer.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import jdk.jfr.Name;
 
 import javax.persistence.*;
 import java.util.List;
@@ -42,7 +41,7 @@ public class Aircraft {
         this.manufacturer = manufacturer;
     }
 
-    enum Type {
+   public  enum Type {
         NA, Wide_body, Narrow_body
     }
 
