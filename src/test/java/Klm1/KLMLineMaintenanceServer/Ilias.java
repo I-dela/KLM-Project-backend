@@ -21,12 +21,12 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.*;
-
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.*;
 
 //is used to provide a bridge between Spring Boot test features and JUnit.Whenever we are using any Spring Boot testing features in our JUnit tests, this annotation will be required.
 @RunWith(SpringRunner.class)
