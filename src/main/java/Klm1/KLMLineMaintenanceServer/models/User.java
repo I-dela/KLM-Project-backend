@@ -45,9 +45,7 @@ public class User {
         this.status = status;
     }
 
-
-
-    enum Role {
+    public enum Role {
         GE, RUN, ADM
     }
 
@@ -109,6 +107,4 @@ public class User {
     }
 
 }
-
-
 

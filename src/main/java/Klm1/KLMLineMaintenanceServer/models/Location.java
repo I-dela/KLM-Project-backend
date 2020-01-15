@@ -32,7 +32,7 @@ public class Location {
         this.type = type;
     }
 
-    enum Type {
+    public enum Type {
         Pier, Buffer
     }
 

@@ -1,17 +1,12 @@
 package Klm1.KLMLineMaintenanceServer.models;
 
 import Klm1.KLMLineMaintenanceServer.models.helper.PrefixSequenceIDGenerator;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.GenericGenerator;
 
-import javax.annotation.processing.Generated;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
-import java.sql.Timestamp;
-import java.time.LocalDateTime;
 import java.util.Date;
-import java.util.List;
 
 @Entity
 @Table(name = "request")
