@@ -4,12 +4,13 @@ import Klm1.KLMLineMaintenanceServer.models.*;
 import Klm1.KLMLineMaintenanceServer.models.helper.UserNotFoundException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.lang.reflect.Array;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /*
@@ -155,5 +156,16 @@ class Felipe_RequestsTest {
         int userRequestsSizeAfter = afterRequestList.size();
 
         assertThat(userRequestsSizeBefore + 1, equalTo(userRequestsSizeAfter));
+    }
+
+    //  Mocks the request repository and returns requests that are in progress by user 
+    @Test
+    void returnInProgressRequestByUser() {
+        request.setStatus(Request.Status.IP);
+        userRequestRepositoryJpa = Mockito.mock(UserRequestRepositoryJpa.class);
+        Mockito.when(userRequestRepositoryJpa.findInProgressRequestsByUser(groundEngineer.getId())).thenReturn(Collections.singletonList(request));
+        List<Request> requestList = userRequestRepositoryJpa.findInProgressRequestsByUser(groundEngineer.getId());
+        boolean isInProgressRequestList = requestList.stream().map(Request::getStatus).allMatch(status -> status.equals(Request.Status.IP));
+        assertTrue(isInProgressRequestList);
     }
 }
