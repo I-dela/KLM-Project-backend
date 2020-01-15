@@ -9,6 +9,7 @@ import Klm1.KLMLineMaintenanceServer.models.*;
 import Klm1.KLMLineMaintenanceServer.models.helper.UserNotFoundException;
 import Klm1.KLMLineMaintenanceServer.repositories.*;
 import Klm1.KLMLineMaintenanceServer.repositories.interfaces.UserRepository;
+import Klm1.KLMLineMaintenanceServer.repositories.security.JWToken;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.Mockito;
@@ -21,7 +22,6 @@ import org.springframework.test.annotation.DirtiesContext;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -69,6 +69,7 @@ class TestIlias {
     @Autowired
     AircraftController aircraftController;
 
+   private  JWToken jwToken;
 
     @Test
     @DirtiesContext
@@ -143,32 +144,21 @@ class TestIlias {
     public void request_tests() {
 
         /* method to test methods of the RequestJpaRepo and the Requestcontroller */
-
-
         // Make object of request
-        EquipmentType equipmentType = this.equipmentTypeRepositoryJpa.findById(5);
-        Aircraft aircraft = this.aircraftRepositoryJpa.findById(2);
-        Location location = this.locationRepositoryJpa.findById("A33");
-        Equipment equipment = this.equipmentRepositoryJpa.findBySerialNumber("116195");
-
-        User user = this.userRepositoryJpa.findById("KLM00005");
-
-        Request requestPost = this.requestController.postRequest(new Request(Request.Status.OP, equipmentType, aircraft, location, equipment, new Date(), "3"), user.getId());
-
-        // get the request to work with by using the findById method
-        Request requestGet = this.requestRepositoryJpa.findById(requestPost.getId());
-
+        Request request = this.requestRepositoryJpa.findById("GE-60");
+        Equipment equipment = equipmentRepositoryJpa.findBySerialNumber("KL142246");
         // set the request status to In Progress
-        this.requestRepositoryJpa.setRequestStatus(requestGet.getId(), Request.Status.IP);
+        this.requestRepositoryJpa.setRequestStatus(request.getId(), Request.Status.IP);
 
         // check wheter the request in the database is changed to (In progress )
-        assertThat(this.requestRepositoryJpa.findById(requestGet.getId()).getStatus(), is(Request.Status.IP));
-
+        assertThat(this.requestRepositoryJpa.findById(request.getId()).getStatus(), is(Request.Status.IP));
         // cancel the request(it should then return to open(OP))
-        this.requestRepositoryJpa.cancelRequestRun(requestGet.getId());
+        this.requestRepositoryJpa.cancelRequestRun(request.getId());
+
+        this.requestRepositoryJpa.setRequestEquipment(request,equipment);
 
         // check whether the status is changed back to open OP
-        assertThat(this.requestRepositoryJpa.findById(requestGet.getId()).getStatus(), is(Request.Status.OP));
+        assertThat(this.requestRepositoryJpa.findById(request.getId()).getStatus(), is(Request.Status.OP));
 
     }
 
