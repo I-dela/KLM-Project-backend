@@ -3,8 +3,9 @@ package Klm1.KLMLineMaintenanceServer.repositories.security;
 public class JWTokenInfo {
   public static final String KEY = "tokenInfo";
 
-  private String userId;
+  private String id;
   private String name;
+  private String status;
   private String role;
 
   public String getRole() {
@@ -15,12 +16,13 @@ public class JWTokenInfo {
     this.role = role;
   }
 
-  public String getUserId() {
-    return userId;
+
+  public String getId() {
+    return id;
   }
 
-  public void setUserId(String userId) {
-    this.userId = userId;
+  public void setId(String id) {
+    this.id = id;
   }
 
   public String getName() {
@@ -29,5 +31,13 @@ public class JWTokenInfo {
 
   public void setName(String name) {
     this.name = name;
+  }
+
+  public String getStatus() {
+    return status;
+  }
+
+  public void setStatus(String status) {
+    this.status = status;
   }
 }

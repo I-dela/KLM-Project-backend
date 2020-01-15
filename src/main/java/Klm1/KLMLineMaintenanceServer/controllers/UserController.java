@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@CrossOrigin(origins = "http://localhost:4200")
 @RequestMapping("/users")
 public class UserController {
 
@@ -48,7 +47,7 @@ public class UserController {
     }
 
     @PutMapping(value = "")
-    public String updateUser( @RequestBody User user) {
+    public String updateUser(@RequestBody User user) {
         userRepository.save(user);
         return "updated successfully";
     }

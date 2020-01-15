@@ -3,9 +3,6 @@ package Klm1.KLMLineMaintenanceServer.repositories;
 import Klm1.KLMLineMaintenanceServer.models.User;
 import Klm1.KLMLineMaintenanceServer.repositories.interfaces.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.repository.CrudRepository;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
@@ -33,15 +30,15 @@ public class UserRepositoryJpa implements UserRepository{
     }
 
     @Override
-
     public User findById(String id) {
         return em.find(User.class, id);
     }
 
-
     @Override
+    public User save(User user) {
+        if (user.getId() == null) em.persist(user);
+        else em.merge(user);
 
-    public User save(User user){
-       return em.merge(user);
+        return user;
     }
 }

@@ -1,4 +1,5 @@
 package Klm1.KLMLineMaintenanceServer.repositories.security;
+
 import Klm1.KLMLineMaintenanceServer.models.helper.AuthenticationException;
 import io.jsonwebtoken.*;
 
@@ -13,18 +14,21 @@ public class JWToken {
   public static final String JWT_USERID_CLAIM = "id";
   public static final String JWT_NAME_CLAIM = "name";
   public static final String JWT_ROLE_CLAIM = "role";
+  public static final String JWT_STATUS_CLAIM = "status";
 
-  private String userId;
-  private String name;
-  private String role;
+  private String username = "YSN";
+  private String userId = null;
+  private String role = "ADM";
+  private String status = "OFF";
 
   public JWToken() {
   }
 
-  public JWToken(String username, String userId, String role) {
-    this.name = username;
+  public JWToken(String username, String userId, String role, String status) {
+    this.username = username;
     this.userId = userId;
     this.role = role;
+    this.status = status;
   }
 
   //Generate a Json Web Token
@@ -32,23 +36,21 @@ public class JWToken {
 
     Key key = getKey(passphrase);
 
-    String token = Jwts.builder()
+    return Jwts.builder()
+            .claim(JWT_USERNAME_CLAIM, this.username)
             .claim(JWT_USERID_CLAIM, this.userId)
-            .claim(JWT_NAME_CLAIM, this.name)
-      .claim(JWT_ROLE_CLAIM, this.role)
-      .setIssuer(userId) // registered claim
-      .setIssuedAt(new Date()) // registered claim
-      .setExpiration(new Date(System.currentTimeMillis() + expiration * 1000)) // registered claim
-      .signWith(key, SignatureAlgorithm.HS512)
-      .compact();
-
-    return token;
+            .claim(JWT_ROLE_CLAIM, this.role)
+            .claim(JWT_STATUS_CLAIM, this.status)
+            .setIssuer(issuer) // registered claim
+            .setIssuedAt(new Date()) // registered claim
+            .setExpiration(new Date(System.currentTimeMillis() + expiration * 1000)) // registered claim
+            .signWith(key, SignatureAlgorithm.HS512)
+            .compact();
   }
 
   private static Key getKey(String passPhrase) {
-    byte hmacKey[] = passPhrase.getBytes(StandardCharsets.UTF_8);
-    Key key = new SecretKeySpec(hmacKey, SignatureAlgorithm.HS512.getJcaName());
-    return key;
+    byte [] hmacKey = passPhrase.getBytes(StandardCharsets.UTF_8);
+    return new SecretKeySpec(hmacKey, SignatureAlgorithm.HS512.getJcaName());
   }
 
   public static JWTokenInfo decode(String encodedToken, String passphrase) throws AuthenticationException {
@@ -59,7 +61,6 @@ public class JWToken {
       Claims claims = jws.getBody();
 
       JWTokenInfo jwToken = new JWTokenInfo();
-
       jwToken.setUserId(claims.get(JWT_USERID_CLAIM).toString());
       jwToken.setName(claims.get(JWT_NAME_CLAIM).toString());
       jwToken.setRole(claims.get(JWT_ROLE_CLAIM).toString());

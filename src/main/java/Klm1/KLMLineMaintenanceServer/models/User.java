@@ -9,27 +9,27 @@ import java.util.List;
 @Entity
 @Table(name = "User")
 @NamedQueries({
-       @NamedQuery(name="find_all_users", query = "select u from User u "),
+        @NamedQuery(name = "find_all_users", query = "select u from User u "),
 })
 public class User {
 
-  @OneToMany(fetch = FetchType.LAZY, mappedBy = "user_id")
-  @JsonIgnore
-  private List<UserRequest> userRequests;
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "user_id")
+    @JsonIgnore
+    private List<UserRequest> userRequests;
 
-  @Id
-  @Column(name = "id")
-  private String id;
+    @Id
+    @Column(name = "id")
+    private String id;
 
-  @Column(name = "name")
-  private String name;
+    @Column(name = "name")
+    private String name;
 
-  @Column(name = "role")
+    @Column(name = "role")
 //  @Enumerated(EnumType.STRING)
-  private String role;
+    private String role;
 
-  @Column(name = "password")
-  private String password;
+    @Column(name = "password")
+    private String password;
 
     @Column(name = "status")
     private String status;

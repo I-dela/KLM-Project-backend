@@ -2,6 +2,7 @@ package Klm1.KLMLineMaintenanceServer.models.helper;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpHeaders;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
@@ -20,12 +21,11 @@ public class AppconfigJ implements WebMvcConfigurer {
   @Override
   public void addCorsMappings(CorsRegistry registry) {
     registry.addMapping("/**")
-      .allowedHeaders("GET", "POST", "PUT", "DELETE")
-      .allowedOrigins("http://localhost:4200")
-      .allowCredentials(true)
-      .allowedHeaders("*")
-      .exposedHeaders("Authorization")
-    ;
+            .allowCredentials(true)
+            .allowedHeaders(HttpHeaders.AUTHORIZATION, HttpHeaders.CONTENT_TYPE)
+            .exposedHeaders(HttpHeaders.AUTHORIZATION, HttpHeaders.CONTENT_TYPE)
+            .allowedMethods("GET", "POST", "PUT", "DELETE")
+            .allowedOrigins("*");
 
   }
 }

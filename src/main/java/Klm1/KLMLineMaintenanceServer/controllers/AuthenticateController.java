@@ -19,7 +19,6 @@ import java.net.URI;
 
 @RestController
 @RequestMapping("/authenticate")
-@CrossOrigin(origins = "http://localhost:4200")
 public class AuthenticateController {
 
   @Autowired
@@ -51,27 +50,15 @@ public class AuthenticateController {
 
 
   @PostMapping("/login")
-  public ResponseEntity<User> authenticateUser(
-    @RequestBody ObjectNode signupInfo,
-    HttpServletRequest request,
-    HttpServletResponse response
-  ) throws AuthenticationException {
-
-    String id = signupInfo.get("iD") == null ? null : signupInfo.get("iD").asText();
-    String password = signupInfo.get("passWord") == null ? null : signupInfo.get("passWord").asText();
-
+  public ResponseEntity<User> authenticateUser(@RequestBody ObjectNode signUpInfo) throws AuthenticationException {
+    String password = signUpInfo.get("password") == null ? null : signUpInfo.get("password").asText();
+    String id = signUpInfo.get("id") == null ? null : signUpInfo.get("id").asText();
     User user = userRepo.findById(id);
 
+    if (user == null) throw new AuthenticationException("Invalid user and/or password");
+    if (!user.validateEncodedPassword(password)) throw new AuthenticationException("Invalid user and/or password");
 
-    if (user == null) {
-      throw new AuthenticationException("Invalid user and/or password");
-    }
-
-    if (!user.validateEncodedPassword(password)) {
-      throw new AuthenticationException("Invalid user and/or password");
-    }
-
-    JWToken jwToken = new JWToken(user.getName(), user.getId(), user.getRole());
+    JWToken jwToken = new JWToken(user.getName(), user.getId(), user.getRole(), user.getStatus());
     // Issue a token for the user valid for some time
     String tokenString = jwToken.encode(appconfigJ.passphrase, appconfigJ.expiration);
 
