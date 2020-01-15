@@ -27,7 +27,7 @@ public class UserRequestRepositoryJpa implements UserRequestRepository {
     }
 
     @Override
-    public List<UserRequest> findAll(){
+    public List<UserRequest> findAll() {
         TypedQuery<UserRequest> query= em.createQuery("select ur from UserRequest ur", UserRequest.class);
 
         return query.getResultList();
@@ -48,7 +48,7 @@ public class UserRequestRepositoryJpa implements UserRequestRepository {
         TypedQuery<Request> query;
 
         if (user.getRole().equals(User.Role.GE.toString())) {
-            query = em.createQuery("select request_id from UserRequest ur where user_id = :user and closedBy is not null", Request.class);
+            query = em.createQuery("select request_id from UserRequest ur where user_id = :user", Request.class);
             query.setParameter("user", user);
         } else if (user.getRole().equals(User.Role.RUN.toString())) {
             query = em.createQuery("select request_id from UserRequest ur where acceptedBy = :user_id OR closedBy = :user_id", Request.class);
