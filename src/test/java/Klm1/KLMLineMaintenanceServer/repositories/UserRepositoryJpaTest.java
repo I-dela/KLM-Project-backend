@@ -1,3 +1,8 @@
+/**
+ * User tests of the UserRepositoryJpa class
+ * @Author Raymond Splinter - IS204 - 500778433
+ */
+
 package Klm1.KLMLineMaintenanceServer.repositories;
 
 import Klm1.KLMLineMaintenanceServer.models.User;
