@@ -25,7 +25,7 @@ public class UserRequestController {
     private String getUserIdFromToken(String token) {
         String s = token.replace("Bearer ", "");
         JWTokenInfo jwTokenInfo = JWToken.decode(s, appconfigJ.passphrase);
-        return jwTokenInfo.getUserId();
+        return jwTokenInfo.getId();
     }
 
     @GetMapping("/user-requests/full")

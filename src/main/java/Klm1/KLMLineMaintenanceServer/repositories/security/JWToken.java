@@ -32,12 +32,12 @@ public class JWToken {
   }
 
   //Generate a Json Web Token
-  public String encode(String passphrase, int expiration) {
+  public String encode(String passphrase, int expiration, String issuer) {
 
     Key key = getKey(passphrase);
 
     return Jwts.builder()
-            .claim(JWT_USERNAME_CLAIM, this.username)
+            .claim(JWT_NAME_CLAIM, this.username)
             .claim(JWT_USERID_CLAIM, this.userId)
             .claim(JWT_ROLE_CLAIM, this.role)
             .claim(JWT_STATUS_CLAIM, this.status)
@@ -61,7 +61,7 @@ public class JWToken {
       Claims claims = jws.getBody();
 
       JWTokenInfo jwToken = new JWTokenInfo();
-      jwToken.setUserId(claims.get(JWT_USERID_CLAIM).toString());
+      jwToken.setId(claims.get(JWT_USERID_CLAIM).toString());
       jwToken.setName(claims.get(JWT_NAME_CLAIM).toString());
       jwToken.setRole(claims.get(JWT_ROLE_CLAIM).toString());
 

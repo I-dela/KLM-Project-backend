@@ -92,4 +92,9 @@ public class EquipmentType {
     public void setEquipmentList(List<Equipment> equipmentList) {
         this.equipmentList = equipmentList;
     }
+
+    @Override
+    public String toString() {
+        return this.group;
+    }
 }

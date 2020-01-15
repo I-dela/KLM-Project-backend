@@ -60,7 +60,7 @@ public class AuthenticateController {
 
     JWToken jwToken = new JWToken(user.getName(), user.getId(), user.getRole(), user.getStatus());
     // Issue a token for the user valid for some time
-    String tokenString = jwToken.encode(appconfigJ.passphrase, appconfigJ.expiration);
+    String tokenString = jwToken.encode(appconfigJ.passphrase, appconfigJ.expiration, appconfigJ.issuer);
 
     return ResponseEntity.accepted()
       .header(HttpHeaders.AUTHORIZATION, "Bearer " + tokenString)

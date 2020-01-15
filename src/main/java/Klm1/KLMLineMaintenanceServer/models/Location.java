@@ -9,13 +9,13 @@ import java.util.List;
 @Table(name = "Location")
 @NamedQueries({
         @NamedQuery(name="find_all_locations", query = "select l from Location l"),
-
 })
 public class Location {
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "location")
     @JsonIgnore
     private List<Request> requests;
+
     @Id
     private String location;
 
@@ -23,7 +23,6 @@ public class Location {
     private Type type;
 
     public Location() {
-
     }
 
     public Location(List<Request> requests, String location, Type type) {
@@ -35,7 +34,6 @@ public class Location {
     public enum Type {
         Pier, Buffer
     }
-
 
     public String getLocation() {
         return location;
@@ -59,6 +57,11 @@ public class Location {
 
     public void setRequests(List<Request> requests) {
         this.requests = requests;
+    }
+
+    @Override
+    public String toString() {
+        return this.location;
     }
 }
 

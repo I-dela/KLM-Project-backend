@@ -85,6 +85,11 @@ public class Aircraft {
     public void setRequests(List<Request> requests) {
         this.requests = requests;
     }
+
+    @Override
+    public String toString() {
+        return this.name;
+    }
 }
 
 
