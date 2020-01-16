@@ -153,13 +153,6 @@ class TestIlias {
         // check wheter the request in the database is changed to (In progress )
         assertThat(this.requestRepositoryJpa.findById(request.getId()).getStatus(), is(Request.Status.IP));
 
-        request = this.requestRepositoryJpa.findById(request.getId());
-        // cancel the request(it should then return to open(OP))
-        this.requestRepositoryJpa.cancelRequestRun(request.getId());
-
-        // check whether the status is changed back to open OP
-        assertThat(this.requestRepositoryJpa.findById(request.getId()).getStatus(), is(Request.Status.OP));
-
     }
 
 
