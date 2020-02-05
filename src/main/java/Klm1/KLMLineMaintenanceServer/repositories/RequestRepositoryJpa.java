@@ -4,6 +4,7 @@ import Klm1.KLMLineMaintenanceServer.models.Equipment;
 import Klm1.KLMLineMaintenanceServer.models.Request;
 import Klm1.KLMLineMaintenanceServer.models.User;
 import Klm1.KLMLineMaintenanceServer.models.UserRequest;
+import Klm1.KLMLineMaintenanceServer.models.helper.UserNotFoundException;
 import Klm1.KLMLineMaintenanceServer.repositories.interfaces.RequestRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -37,13 +38,17 @@ public class RequestRepositoryJpa implements RequestRepository {
     }
 
     @Override
-    public Request save(Request request, String userId) {
+    public Request save(Request request, String userId) throws UserNotFoundException {
         User user = em.find(User.class, userId);
-        Request request1 = em.merge(request);
-        UserRequest userRequest = new UserRequest(user, request1);
+        if (user == null) {
+            throw new UserNotFoundException("User not found");
+        } else {
+            Request request1 = em.merge(request);
+            UserRequest userRequest = new UserRequest(user, request1);
 
-        em.merge(userRequest);
-        return request1;
+            em.merge(userRequest);
+            return request1;
+        }
     }
 
     @Override
@@ -104,6 +109,12 @@ public class RequestRepositoryJpa implements RequestRepository {
         query.setParameter(2,request.getId());
         em.merge(request);
     }
+
+    public void setEquipmentForRequest(Request request, Equipment equipment){
+        request.setEquipment(equipment);
+        em.merge(request);
+    }
+
 
     public List<Request> findRequestsByStatus(Request.Status status) {
         TypedQuery<Request> namedQuery = em.createNamedQuery("find_requests_by_status", Request.class);

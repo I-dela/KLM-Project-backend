@@ -145,13 +145,20 @@ class TestIlias {
 
         /* method to test methods of the RequestJpaRepo and the Requestcontroller */
         // Make object of request
-        Request request = this.requestRepositoryJpa.findById("GE-61");
-
+        Request request = this.requestRepositoryJpa.findById("GE-60");
+        Equipment equipment = equipmentRepositoryJpa.findBySerialNumber("KL142246");
         // set the request status to In Progress
         this.requestRepositoryJpa.setRequestStatus(request.getId(), Request.Status.IP);
 
         // check wheter the request in the database is changed to (In progress )
         assertThat(this.requestRepositoryJpa.findById(request.getId()).getStatus(), is(Request.Status.IP));
+        // cancel the request(it should then return to open(OP))
+        this.requestRepositoryJpa.cancelRequestRun(request.getId());
+
+        this.requestRepositoryJpa.setRequestEquipment(request,equipment);
+
+        // check whether the status is changed back to open OP
+        assertThat(this.requestRepositoryJpa.findById(request.getId()).getStatus(), is(Request.Status.OP));
 
     }
 
