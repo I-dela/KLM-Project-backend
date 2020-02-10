@@ -110,6 +110,13 @@ public class User {
         return this.name;
     }
 
+    @Override
+    public boolean equals(Object obj) {
+        if (!(obj instanceof User)) return false;
+        User user = (User) obj;
+        return this.id.equals(user.getId());
+    }
+
     public boolean validateEncodedPassword(String password) {
         return this.password.equals(password);
     }

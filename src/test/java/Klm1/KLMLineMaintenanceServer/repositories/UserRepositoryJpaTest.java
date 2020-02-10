@@ -1,16 +1,18 @@
 /**
  * User tests of the UserRepositoryJpa class
- * @Author Raymond Splinter - IS204 - 500778433
+ * @Author Raymond Splinter - 500778433 - IS204
  */
 
 package Klm1.KLMLineMaintenanceServer.repositories;
 
 import Klm1.KLMLineMaintenanceServer.models.User;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
+import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -20,8 +22,8 @@ class UserRepositoryJpaTest {
     @Autowired
     private UserRepositoryJpa repository;
 
-    List<User> users;
-    User user;
+    private List<User> users;
+    private User user;
 
     @BeforeEach
     void setUp() {
@@ -29,7 +31,16 @@ class UserRepositoryJpaTest {
             getUsers();
         }
 
-        user = new User(null, "KLM123456", "John", "GE", "12345", "OFF");
+        user = new User("KLM12345", "John", "GE", "12345");
+    }
+
+    @AfterEach
+    void deleteAddedUser() {
+        User toBeDeletedUser = repository.findById(user.getId());
+
+        if (toBeDeletedUser != null) {
+            repository.delete(toBeDeletedUser);
+        }
     }
 
     private void getUsers() {
@@ -61,24 +72,34 @@ class UserRepositoryJpaTest {
 
     @Test
     void addUser() {
-        int listSize = users.size();
-
         repository.save(user);
-
         getUsers();
 
-        assertEquals(listSize + 1, users.size());
-        assertEquals(user, users.get(users.size() - 1));
+        User addedUser = repository.findById(user.getId());
+
+        assertEquals(user.getId(), addedUser.getId());
+    }
+
+    @Test
+    void addingDuplicateUsers() {
+        int size = users.size();
+        repository.save(user);
+        getUsers();
+
+        List<User> updatedList = repository.findAll();
+
+        repository.save(user);
+        assertEquals(size + 1, updatedList.size());
+        assertEquals(users, updatedList);
     }
 
     @Test
     void editUser() {
-        int listSize = users.size();
-        String newName = "Jan";
-
         repository.save(user);
         getUsers();
 
+        int listSize = users.size();
+        String newName = "Jan";
         User editedUser = user;
 
         assertNotEquals(user.getName(), newName);
@@ -88,13 +109,11 @@ class UserRepositoryJpaTest {
 
         getUsers();
 
-        User updatedUser = users.get(users.size() - 1);
+        User updatedUser = repository.findById(user.getId());
 
         assertEquals(listSize, users.size());
         assertNotSame(updatedUser, user);
         assertEquals(newName, updatedUser.getName());
-
-        repository.delete(updatedUser);
     }
 
     @Test
@@ -105,12 +124,45 @@ class UserRepositoryJpaTest {
         getUsers();
 
         assertEquals(listSize + 1, users.size());
-        assertEquals(user, users.get(listSize));
+        assertEquals(user, repository.findById(user.getId()));
 
         repository.delete(user);
         getUsers();
 
         assertEquals(listSize, users.size());
-        assertNotEquals(user, users.get(listSize - 1));
+
+        assertNull(repository.findById(user.getId()));
+    }
+
+    @Test
+    void deletingNonExistingUser() {
+        int size = users.size();
+        repository.delete(user);
+
+        List<User> updatedList = repository.findAll();
+
+        assertEquals(size, updatedList.size());
+        assertEquals(users, updatedList);
+    }
+
+    @Test
+    void findNonExistingUser() {
+        User user = repository.findById("1");
+
+        assertNull(user);
+    }
+
+    @Test
+    void checkNotAddingNonExistingUser() {
+        int size = users.size();
+        User addedUser = null;
+
+        try {
+            addedUser = repository.save(null);
+        } catch (NullPointerException e) {
+            assertNull(addedUser);
+            assertEquals(users.size(), size);
+        }
+
     }
 }
